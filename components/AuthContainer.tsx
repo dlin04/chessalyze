@@ -7,6 +7,7 @@ import { SignUpForm } from "./SignUpForm";
 
 export const AuthContainer = () => {
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
+
   const router = useRouter();
 
   const toggleAuthMode = () => {

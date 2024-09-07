@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
 type SignUpFormProps = {
   toggleAuthMode: () => void;
@@ -11,6 +12,8 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [signUpError, setSignUpError] = useState<string>("");
+
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -36,6 +39,8 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
       console.log(
         "if the user does not exist, register them and bring them to analyze page"
       );
+      // if successful, router.push('/analyze');
+      // otherwise, display error or something
     } catch (error) {
       console.error(error);
     }

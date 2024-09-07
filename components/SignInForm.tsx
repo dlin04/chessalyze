@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
 type SignInFormProps = {
   toggleAuthMode: () => void;
@@ -10,6 +11,8 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [signInError, setSignInError] = useState<string>("");
+
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -22,6 +25,8 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
 
     try {
       console.log("send to db to find if user credentials are right");
+
+      // if successful, do router.push("/analyze");
     } catch (error) {
       console.error(error);
     }
