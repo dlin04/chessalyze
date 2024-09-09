@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const fen = searchParams.get("fen");
+  const res = await request.json();
+  const { fen } = res;
 
   if (fen === null) {
     return NextResponse.json(

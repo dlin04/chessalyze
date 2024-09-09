@@ -2,8 +2,8 @@ import { Chess } from "chess.js";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const pgn = searchParams.get("pgn");
+  const res = await request.json();
+  const { pgn } = res;
 
   if (pgn === null) {
     return NextResponse.json(
