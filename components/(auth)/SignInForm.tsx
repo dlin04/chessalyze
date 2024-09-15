@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 type SignInFormProps = {
   toggleAuthMode: () => void;
@@ -12,7 +12,7 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
   const [password, setPassword] = useState<string>("");
   const [signInError, setSignInError] = useState<string>("");
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -36,8 +36,8 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
     <>
       <div>
         <p>
-          An account would allow you to store analzyed games, but isn't
-          necessary. Dont have an account?{" "}
+          An account would allow you to store analzyed games, but isn&#39;t
+          necessary. Don&#39;t have an account?{" "}
           <button onClick={toggleAuthMode}>Sign Up</button>
         </p>
         {signInError && <div>{signInError}</div>}

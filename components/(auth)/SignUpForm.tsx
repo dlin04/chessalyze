@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 type SignUpFormProps = {
   toggleAuthMode: () => void;
@@ -13,13 +13,13 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [signUpError, setSignUpError] = useState<string>("");
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (username.trim() === "") {
-      setSignUpError("Please provide username.");
+    if (username.trim() === "" || username.includes(" ")) {
+      setSignUpError("Username cannot include spaces.");
       return;
     }
     if (password.trim() === "" || confirmPassword.trim() === "") {
