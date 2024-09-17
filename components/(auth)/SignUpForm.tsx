@@ -1,5 +1,6 @@
 "use client";
 
+import { POST } from "@/app/api/auth/signin/route";
 import { useState, FormEvent } from "react";
 // import { useRouter } from "next/navigation";
 
@@ -8,6 +9,7 @@ type SignUpFormProps = {
 };
 
 export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
+  const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -41,6 +43,14 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
       );
       // if successful, router.push('/analyze');
       // otherwise, display error or something
+
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, username, password }),
+      });
     } catch (error) {
       console.error(error);
     }
@@ -55,6 +65,13 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
         </p>
         {signUpError && <div>{signUpError}</div>}
         <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="email"
+            placeholder="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <input
             type="text"
             name="username"

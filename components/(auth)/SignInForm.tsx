@@ -8,7 +8,7 @@ type SignInFormProps = {
 };
 
 export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
-  const [username, setUsername] = useState<string>("");
+  const [username, setUsername] = useState<string>(""); // could input username or email
   const [password, setPassword] = useState<string>("");
   const [signInError, setSignInError] = useState<string>("");
 
@@ -26,7 +26,13 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
     try {
       console.log("send to db to find if user credentials are right");
 
-      // if successful, do router.push("/analyze");
+      const res = await fetch("/api/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
     } catch (error) {
       console.error(error);
     }
@@ -45,7 +51,7 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
           <input
             type="text"
             name="username"
-            placeholder="username"
+            placeholder="username or email"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
