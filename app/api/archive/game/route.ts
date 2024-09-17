@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
     // choose which game they want to analyze
     return NextResponse.json(gameData);
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch game from Chess.com API" },
       { status: 500 }

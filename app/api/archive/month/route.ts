@@ -25,6 +25,7 @@ export async function GET(request: NextRequest) {
     // split up the code
     return NextResponse.json(archiveData);
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch user from Chess.com API" },
       { status: 500 }
