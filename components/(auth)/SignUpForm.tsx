@@ -1,6 +1,5 @@
 "use client";
 
-import { POST } from "@/app/api/auth/signin/route";
 import { useState, FormEvent } from "react";
 // import { useRouter } from "next/navigation";
 
@@ -51,6 +50,8 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
         },
         body: JSON.stringify({ email, username, password }),
       });
+
+      console.log(res);
     } catch (error) {
       console.error(error);
     }

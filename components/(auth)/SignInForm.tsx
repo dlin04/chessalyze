@@ -33,6 +33,9 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
         },
         body: JSON.stringify({ username, password }),
       });
+
+      // session management?
+      console.log(res);
     } catch (error) {
       console.error(error);
     }
