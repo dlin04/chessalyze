@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     });
 
     // deal with session management here?
-    return NextResponse.json({ message: "User created, try signing in" });
+    return NextResponse.json({ message: "User created" });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Error signing up" }, { status: 500 });
