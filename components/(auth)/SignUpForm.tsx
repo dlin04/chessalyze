@@ -50,9 +50,20 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
         },
         body: JSON.stringify({ email, username, password }),
       });
+      const data = await res.json();
 
-      // session management?
-      console.log(res);
+      if (data.message == "Email already registered") {
+        setSignUpError("Email already registered");
+        return;
+      } else if (data.message == "Username already registered") {
+        setSignUpError("Username already registered");
+        return;
+      }
+
+      // everything else works
+      if (data.message == "User created") {
+        alert("yay");
+      }
     } catch (error) {
       console.error(error);
     }
