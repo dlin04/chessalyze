@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type SignInFormProps = {
   toggleAuthMode: () => void;
@@ -12,7 +12,7 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
   const [password, setPassword] = useState<string>("");
   const [signInError, setSignInError] = useState<string>("");
 
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -33,9 +33,12 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
         },
         body: JSON.stringify({ username, password }),
       });
+      const data = await res.json();
 
-      // session management?
-      console.log(res);
+      if (data.message === "Login successful") {
+        localStorage.setItem("token", data.token);
+        router.push("/analyze");
+      }
     } catch (error) {
       console.error(error);
     }

@@ -51,6 +51,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
         body: JSON.stringify({ email, username, password }),
       });
 
+      // session management?
       console.log(res);
     } catch (error) {
       console.error(error);
