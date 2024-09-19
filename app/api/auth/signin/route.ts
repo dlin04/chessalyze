@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,8 +11,6 @@ export async function POST(request: NextRequest) {
     const user = await prisma.user.findUnique({
       where: { username },
     });
-
-    console.log(user);
 
     if (!user) {
       return NextResponse.json(
@@ -29,10 +28,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log("checking password");
+    const token = jwt.sign(
+      { id: user.id, username: user.username },
+      process.env.JWT_SECRET!,
+      { expiresIn: "5s" }
+    );
 
-    // deal with session management
-    return NextResponse.json({ message: "Login successful" });
+    return NextResponse.json({ message: "Login successful", token });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Error signing in" }, { status: 500 });

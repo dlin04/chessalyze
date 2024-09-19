@@ -29,8 +29,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log("Adsafsf");
-
     // next, ask to choose unique username
     if (existingUsername) {
       return NextResponse.json(
@@ -49,7 +47,8 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ message: "User created" });
+    // deal with session management here?
+    return NextResponse.json({ message: "User created, try signing in" });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Error signing up" }, { status: 500 });
