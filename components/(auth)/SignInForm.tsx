@@ -35,7 +35,7 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
 
       if (data.message === "Login successful") {
         localStorage.setItem("token", data.token);
-        router.push("/analyze");
+        router.push("/");
       }
 
       console.log("data here:", data.message);
