@@ -24,8 +24,6 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
     setSignInError("");
 
     try {
-      console.log("send to db to find if user credentials are right");
-
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -39,8 +37,11 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
         localStorage.setItem("token", data.token);
         router.push("/analyze");
       }
+
+      console.log("data here:", data.message);
     } catch (error) {
       console.error(error);
+      console.log(error);
     }
   };
 

@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ message: "Login successful", token });
   } catch (error) {
+    console.log(error);
     console.error(error);
     return NextResponse.json({ error: "Error signing in" }, { status: 500 });
   }
