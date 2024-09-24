@@ -18,11 +18,8 @@ export async function POST(request: NextRequest) {
       }),
     ]);
 
-    console.log("existingEmail:", existingEmail);
-
     // first checking if email is registered
     if (existingEmail) {
-      console.log("existing email");
       return NextResponse.json(
         { message: "Email already registered" },
         { status: 409 }

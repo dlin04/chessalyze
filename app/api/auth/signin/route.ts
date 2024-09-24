@@ -31,12 +31,11 @@ export async function POST(request: NextRequest) {
     const token = jwt.sign(
       { id: user.id, username: user.username },
       process.env.JWT_SECRET!,
-      { expiresIn: "5s" }
+      { expiresIn: "15m" }
     );
 
     return NextResponse.json({ message: "Login successful", token });
   } catch (error) {
-    console.log(error);
     console.error(error);
     return NextResponse.json({ error: "Error signing in" }, { status: 500 });
   }

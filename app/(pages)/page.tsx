@@ -1,10 +1,13 @@
-import { AuthContainer } from "@/components/(auth)/AuthContainer";
+"use client";
+import { Chessboard } from "react-chessboard";
 
 export default function Home() {
   return (
     <>
-      <h1>Home Page</h1>
-      <AuthContainer />
+      <div>home / analyze page</div>
+      <div className="w-[500px] h-[500px]">
+        <Chessboard id="BasicBoard" />
+      </div>
     </>
   );
 }

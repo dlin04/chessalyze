@@ -37,11 +37,8 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
         localStorage.setItem("token", data.token);
         router.push("/");
       }
-
-      console.log("data here:", data.message);
     } catch (error) {
       console.error(error);
-      console.log(error);
     }
   };
 

@@ -36,13 +36,6 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
     setSignUpError("");
 
     try {
-      console.log("send to db to find if user exists or not!");
-      console.log(
-        "if the user does not exist, register them and bring them to analyze page"
-      );
-      // if successful, router.push('/analyze');
-      // otherwise, display error or something
-
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -62,7 +55,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
 
       // everything else works
       if (data.message == "User created") {
-        alert("yay");
+        alert("Go to sign in.");
       }
     } catch (error) {
       console.error(error);
