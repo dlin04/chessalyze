@@ -1,33 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useAuth } from "@/app/context/AuthContext"; // Replace with your actual path
 import { useRouter } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
 
 export const Navbar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
   const router = useRouter();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        const currentTime = Date.now() / 1000;
-
-        if (decoded.exp && decoded.exp > currentTime) {
-          setIsAuthenticated(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }, [isAuthenticated]);
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
-    router.push("/auth");
   };
 
   return (

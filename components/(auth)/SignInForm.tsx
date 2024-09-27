@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext";
 
 type SignInFormProps = {
   toggleAuthMode: () => void;
@@ -13,6 +14,7 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
   const [signInError, setSignInError] = useState<string>("");
 
   const router = useRouter();
+  const { setIsAuthenticated } = useAuth();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -35,7 +37,10 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
 
       if (data.message === "Login successful") {
         localStorage.setItem("token", data.token);
+        setIsAuthenticated(true);
         router.push("/");
+      } else {
+        setSignInError(data.message);
       }
     } catch (error) {
       console.error(error);
@@ -46,11 +51,10 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
     <>
       <div>
         <p>
-          An account would allow you to store analzyed games, but isn&#39;t
-          necessary. Don&#39;t have an account?{" "}
+          Don&#39;t have an account?{" "}
           <button onClick={toggleAuthMode}>Sign Up</button>
         </p>
-        {signInError && <div>{signInError}</div>}
+        {signInError && <div className="text-red-500">{signInError}</div>}
         <form onSubmit={handleSubmit}>
           <input
             type="text"

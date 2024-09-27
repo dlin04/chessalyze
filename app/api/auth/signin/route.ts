@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     if (!user) {
       return NextResponse.json(
-        { message: "Email or username not registered" },
+        { message: "Email / username not registered" },
         { status: 404 }
       );
     }

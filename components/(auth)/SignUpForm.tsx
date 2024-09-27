@@ -69,7 +69,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
           Already have an account?{" "}
           <button onClick={toggleAuthMode}>Sign In</button>
         </p>
-        {signUpError && <div>{signUpError}</div>}
+        {signUpError && <div className="text-red-500">{signUpError}</div>}
         <form onSubmit={handleSubmit}>
           <input
             type="text"

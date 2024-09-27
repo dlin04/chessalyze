@@ -15,12 +15,16 @@ export const AuthContainer = () => {
   };
 
   const handleClick = () => {
-    router.push("/analyze");
+    router.push("/");
   };
 
   return (
     <>
       <h2>Welcome to Chessalyze!</h2>
+      <p>
+        An account would allow you to store analzyed games, but isn&#39;t
+        necessary.
+      </p>
       <div>
         {isSignUp ? (
           <SignUpForm toggleAuthMode={toggleAuthMode} />
