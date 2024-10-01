@@ -10,6 +10,11 @@ export const Navbar = () => {
   const handleSignOut = () => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
+    window.location.reload();
+  };
+
+  const handleClickSaved = () => {
+    router.push("/saved");
   };
 
   return (
@@ -29,12 +34,20 @@ export const Navbar = () => {
             Sign In
           </button>
         ) : (
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handleSignOut}
-          >
-            Sign Out
-          </button>
+          <>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={handleClickSaved}
+            >
+              Saved
+            </button>
+            <button
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              onClick={handleSignOut}
+            >
+              Sign Out
+            </button>
+          </>
         )}
       </div>
     </nav>

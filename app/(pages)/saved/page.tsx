@@ -1,10 +1,11 @@
+"use client";
+
+import { useAuth } from "@/app/context/AuthContext";
+
 export default function Saved() {
+  const { isAuthenticated } = useAuth();
+
   return (
-    <>
-      <div>saved games here if user authenticated</div>
-      <div>
-        need to figure out how to make this reachable iff user authenticated
-      </div>
-    </>
+    <>{isAuthenticated ? <div>signed in</div> : <div>not signed in</div>}</>
   );
 }

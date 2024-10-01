@@ -1,9 +1,10 @@
-"use client";
-
 import { useState, FormEvent } from "react";
+import { MonthModal } from "./MonthModal";
 
 export const MoveList = () => {
   const [gameUsername, setGameUsername] = useState<string>("");
+  const [isMonthModalOpen, setIsMonthModalOpen] = useState<boolean>(false);
+  const [monthModalData, setMonthModalData] = useState<string[]>([]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -19,11 +20,15 @@ export const MoveList = () => {
         }
       );
       const data = await res.json();
-
-      console.log(data);
+      setMonthModalData(data.archives);
+      setIsMonthModalOpen(true);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const closeModal = () => {
+    setIsMonthModalOpen(false);
   };
 
   return (
@@ -37,6 +42,12 @@ export const MoveList = () => {
         />
         <button type="submit">Find Games</button>
       </form>
+
+      <MonthModal
+        isOpen={isMonthModalOpen}
+        onClose={closeModal}
+        data={monthModalData}
+      />
     </>
   );
 };
