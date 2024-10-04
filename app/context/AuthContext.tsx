@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useState, useContext, useEffect } from "react";
-import { jwtDecode } from "jwt-decode"; // Make sure this path is correct
+import { jwtDecode } from "jwt-decode";
 
 type AuthContextProps = {
   isAuthenticated: boolean;

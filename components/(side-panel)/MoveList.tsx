@@ -27,7 +27,7 @@ export const MoveList = () => {
     }
   };
 
-  const closeModal = () => {
+  const closeMonthModal = () => {
     setIsMonthModalOpen(false);
   };
 
@@ -44,8 +44,9 @@ export const MoveList = () => {
       </form>
 
       <MonthModal
+        selectedPlayer={gameUsername}
         isOpen={isMonthModalOpen}
-        onClose={closeModal}
+        onClose={closeMonthModal}
         data={monthModalData}
       />
     </>

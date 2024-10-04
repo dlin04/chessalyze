@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  try {
-    const res = await request.json();
-    const { monthURL } = res;
+  const { searchParams } = new URL(request.url);
+  const gamesFromMonthURL = searchParams.get("gamesFromMonthURL");
 
-    const gameRes = await fetch(monthURL);
+  if (!gamesFromMonthURL) {
+    return NextResponse.json(
+      { error: "Missing gamesFromMonthURL parameter" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const gameRes = await fetch(gamesFromMonthURL);
     const gameData = await gameRes.json();
-    // returns the whole list of games from that month
-    // can parse the data in the frontend to display to user and
-    // choose which game they want to analyze
     return NextResponse.json(gameData);
   } catch (error) {
     console.error(error);
