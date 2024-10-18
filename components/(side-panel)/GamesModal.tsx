@@ -20,8 +20,7 @@ export const GameModal: React.FC<GamesModalProps> = ({
   if (!isOpen) return null;
 
   const handleSelectGame = (game: GameModalData) => {
-    // onGameSelect(game.pgn.split("\n")[22]);
-    onGameSelect("1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qxf7#");
+    onGameSelect(game.pgn.split("\n")[22]);
     onClose();
   };
 
