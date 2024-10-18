@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   title: "Chessalyze",
   description:
     "An application that allows users to analyze and store their Chess.com games for free!",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 // add a navbar to layout

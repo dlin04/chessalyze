@@ -2,8 +2,8 @@ import { Chess } from "chess.js";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const res = await request.json();
-  const { pgn } = res;
+  const { searchParams } = new URL(request.url);
+  const pgn = searchParams.get("pgn");
 
   if (pgn === null) {
     return NextResponse.json(
@@ -17,10 +17,16 @@ export async function GET(request: NextRequest) {
 
   chess.loadPgn(pgn);
   const moves = chess.history();
+  const lastMoveIndex = moves.length - 1;
+
   chess.reset();
-  moves.forEach((move) => {
+  moves.forEach((move, index) => {
     chess.move(move);
     allPositions.push(chess.fen());
+
+    if (index === lastMoveIndex && chess.isCheckmate()) {
+      allPositions.pop();
+    }
   });
 
   const allStockfishRes = [];
@@ -31,12 +37,13 @@ export async function GET(request: NextRequest) {
       );
       const stockfishData = await stockfishRes.json();
       allStockfishRes.push(stockfishData);
-      return NextResponse.json(allStockfishRes);
     }
+    return NextResponse.json(allStockfishRes);
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch Stockfish analysis" },
-      { status: 500 } // 500: internal server error
+      { status: 500 }
     );
   }
 }

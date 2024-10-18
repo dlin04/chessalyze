@@ -9,6 +9,7 @@ interface MonthModalProps {
   isOpen: boolean;
   onClose: () => void;
   data: string[];
+  onGameSelect: (pgn: string) => void;
 }
 
 export const MonthModal: React.FC<MonthModalProps> = ({
@@ -16,6 +17,7 @@ export const MonthModal: React.FC<MonthModalProps> = ({
   isOpen,
   onClose,
   data,
+  onGameSelect,
 }) => {
   const [isGameModalOpen, setIsGameModalOpen] = useState<boolean>(false);
   const [gameModalData, setGameModalData] = useState<GameModalData[]>([]);
@@ -78,6 +80,7 @@ export const MonthModal: React.FC<MonthModalProps> = ({
         isOpen={isGameModalOpen}
         onClose={closeGameModal}
         data={gameModalData}
+        onGameSelect={onGameSelect}
       />
     </>
   );
