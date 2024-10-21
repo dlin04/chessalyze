@@ -55,7 +55,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ toggleAuthMode }) => {
 
       // everything else works
       if (data.message == "User created") {
-        alert("Go to sign in.");
+        alert("User created successfully. Go to Sign In.");
       }
     } catch (error) {
       console.error(error);
