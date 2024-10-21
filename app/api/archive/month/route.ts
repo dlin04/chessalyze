@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    if (archiveData.archives.length() == 0) {
+    if (archiveData.archives.length == 0) {
       return NextResponse.json({ message: "Empty archives" }, { status: 204 });
     }
     return NextResponse.json(archiveData);
