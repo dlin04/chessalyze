@@ -6,8 +6,8 @@ const SALT_ROUNDS = 10;
 
 export async function POST(request: NextRequest) {
   try {
-    const res = await request.json();
-    const { email, username, password } = res;
+    const req = await request.json();
+    const { email, username, password } = req;
 
     const [existingUsername, existingEmail] = await Promise.all([
       prisma.user.findUnique({
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // deal with session management here?
+    // user created successfully, does alert() and tells user to go to signin route
     return NextResponse.json({ message: "User created" });
   } catch (error) {
     console.error(error);

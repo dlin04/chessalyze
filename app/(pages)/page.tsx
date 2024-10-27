@@ -1,5 +1,5 @@
 "use client";
-import { MoveList } from "@/components/(side-panel)/MoveList";
+import { MoveList } from "@/components/MoveList";
 import { Chessboard } from "react-chessboard";
 
 export default function Home() {

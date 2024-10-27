@@ -9,7 +9,7 @@ type SignInFormProps = {
 };
 
 export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
-  const [username, setUsername] = useState<string>(""); // could input username or email
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [signInError, setSignInError] = useState<string>("");
 
@@ -36,7 +36,7 @@ export const SignInForm: React.FC<SignInFormProps> = ({ toggleAuthMode }) => {
       const data = await res.json();
 
       if (data.message === "Login successful") {
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("accessToken", data.accessToken);
         setIsAuthenticated(true);
         router.push("/");
       } else {

@@ -5,8 +5,10 @@ import jwt from "jsonwebtoken";
 
 export async function POST(request: NextRequest) {
   try {
-    const res = await request.json();
-    const { username, password } = res;
+    const req = await request.json();
+    const { username, password } = req;
+
+    console.log("received info:", username, password);
 
     const user = await prisma.user.findUnique({
       where: { username },
@@ -19,7 +21,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // check password
+    console.log("got past this");
+
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return NextResponse.json(
@@ -28,13 +31,31 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       { id: user.id, username: user.username },
-      process.env.JWT_SECRET!,
+      process.env.JWT_ACCESS_SECRET!,
       { expiresIn: "15m" }
     );
 
-    return NextResponse.json({ message: "Login successful", token });
+    const refreshToken = jwt.sign(
+      { id: user.id, username: user.username },
+      process.env.JWT_REFRESH_SECRET!,
+      { expiresIn: "7d" }
+    );
+
+    const response = NextResponse.json({
+      message: "Login successful",
+      accessToken,
+    });
+    response.cookies.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 7 * 24 * 60 * 60,
+    });
+
+    return response;
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Error signing in" }, { status: 500 });

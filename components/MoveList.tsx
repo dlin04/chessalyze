@@ -1,6 +1,6 @@
 import { Chess } from "chess.js";
 import { useState, FormEvent, useEffect } from "react";
-import { MonthModal } from "./MonthModal";
+import { MonthModal } from "./(modals)/MonthModal";
 
 export const MoveList = () => {
   const [gameUsername, setGameUsername] = useState<string>("");
