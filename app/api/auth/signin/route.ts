@@ -8,8 +8,6 @@ export async function POST(request: NextRequest) {
     const req = await request.json();
     const { username, password } = req;
 
-    console.log("received info:", username, password);
-
     const user = await prisma.user.findUnique({
       where: { username },
     });
@@ -20,8 +18,6 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
-
-    console.log("got past this");
 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
