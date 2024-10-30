@@ -3,19 +3,20 @@ import { Chessboard } from "react-chessboard";
 import { useState } from "react";
 import { SearchForm } from "@/components/SearchForm";
 import { MonthModal } from "@/components/(modals)/MonthModal";
+import { LoadingModal } from "@/components/(modals)/LoadingModal"; // Import the LoadingModal
 import { useStockfishAnalysis } from "@/hooks/useStockfishAnalysis";
 
 export default function Home() {
   const [gameUsername, setGameUsername] = useState<string>("");
-  const [isMonthModalOpen, setIsMonthModalOpen] = useState<boolean>(false);
   const [monthModalData, setMonthModalData] = useState<string[]>([]);
+  const [isMonthModalOpen, setIsMonthModalOpen] = useState<boolean>(false);
   const [selectedGamePGN, setSelectedGamePGN] = useState<string>("");
 
-  const { allStockfishRes, analysisComplete, PGN } =
+  const { isLoading, analysisComplete, allStockfishRes, PGN } =
     useStockfishAnalysis(selectedGamePGN);
 
-  const handleGameSelection = (pgn: string) => {
-    setSelectedGamePGN(pgn);
+  const handleGameSelection = (selectPGN: string) => {
+    setSelectedGamePGN(selectPGN);
     setIsMonthModalOpen(false);
   };
 
@@ -41,12 +42,21 @@ export default function Home() {
         data={monthModalData}
         onGameSelect={handleGameSelection}
       />
-
+      <LoadingModal isOpen={isLoading} />
       {analysisComplete && (
         <>
           <div>Analysis complete!</div>
           <div>{PGN}</div>
-          <div>{allStockfishRes}</div>
+          <br></br>
+          <div>
+            {allStockfishRes.map((res, index) => (
+              <div key={index}>
+                <p>Evaluation: {res.evaluation}</p>
+                <p>Best Move: {res.bestmove}</p>
+                <p>Continuation: {res.continuation}</p>
+              </div>
+            ))}
+          </div>
         </>
       )}
     </>

@@ -1,16 +1,28 @@
 import { useState, useEffect } from "react";
 import { Chess } from "chess.js";
 
+interface StockfishType {
+  evaluation: number;
+  bestmove: string;
+  continuation: string;
+}
+
 export const useStockfishAnalysis = (selectedGamePGN: string) => {
-  const [allStockfishRes, setAllStockfishRes] = useState<string[]>([]);
+  const [allStockfishRes, setAllStockfishRes] = useState<StockfishType[]>([]);
   const [positionsCount, setPositionsCount] = useState<number>(0);
   const [responsesCount, setResponsesCount] = useState<number>(0);
   const [analysisComplete, setAnalysisComplete] = useState<boolean>(false);
   const [PGN, setPGN] = useState<string>(selectedGamePGN);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedGamePGN) {
       const fetchStockfishRes = async () => {
+        setIsLoading(true);
+        setPGN("");
+        setAllStockfishRes([]);
+        setAnalysisComplete(false);
+
         const chess = new Chess();
         const allPositions: string[] = [];
 
@@ -38,7 +50,6 @@ export const useStockfishAnalysis = (selectedGamePGN: string) => {
         setPGN(chess.pgn());
         setPositionsCount(allPositions.length);
         setResponsesCount(0);
-        setAnalysisComplete(false);
 
         for (const position of allPositions) {
           try {
@@ -50,6 +61,8 @@ export const useStockfishAnalysis = (selectedGamePGN: string) => {
             console.error(error);
           }
         }
+
+        setIsLoading(false);
       };
 
       fetchStockfishRes();
@@ -62,5 +75,5 @@ export const useStockfishAnalysis = (selectedGamePGN: string) => {
     }
   }, [responsesCount, positionsCount]);
 
-  return { allStockfishRes, analysisComplete, PGN };
+  return { isLoading, analysisComplete, allStockfishRes, PGN };
 };
