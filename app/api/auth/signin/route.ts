@@ -7,7 +7,6 @@ export async function POST(request: NextRequest) {
   try {
     const req = await request.json();
     const { username, password } = req;
-
     const user = await prisma.user.findUnique({
       where: { username },
     });
@@ -29,27 +28,28 @@ export async function POST(request: NextRequest) {
 
     const accessToken = jwt.sign(
       { id: user.id, username: user.username },
-      process.env.JWT_ACCESS_SECRET!,
+      process.env.JWT_SECRET!,
       { expiresIn: "15m" }
     );
 
-    const refreshToken = jwt.sign(
-      { id: user.id, username: user.username },
-      process.env.JWT_REFRESH_SECRET!,
-      { expiresIn: "7d" }
-    );
+    // const refreshToken = jwt.sign(
+    //   { id: user.id, username: user.username },
+    //   process.env.JWT_REFRESH_SECRET!,
+    //   { expiresIn: "7d" }
+    // );
 
     const response = NextResponse.json({
       message: "Login successful",
       accessToken,
     });
-    response.cookies.set("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/",
-      maxAge: 7 * 24 * 60 * 60,
-    });
+
+    // response.cookies.set("refreshToken", refreshToken, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: "strict",
+    //   path: "/",
+    //   maxAge: 7 * 24 * 60 * 60,
+    // });
 
     return response;
   } catch (error) {

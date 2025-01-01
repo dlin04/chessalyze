@@ -42,7 +42,7 @@ export const SearchForm = ({
         return;
       }
 
-      setMonthModalData(data.archives);
+      setMonthModalData(data.archives.reverse());
       setIsMonthModalOpen(true);
     } catch (error) {
       console.error(error);

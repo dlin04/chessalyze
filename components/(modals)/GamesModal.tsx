@@ -33,7 +33,7 @@ export const GameModal: React.FC<GamesModalProps> = ({
           &times;
         </button>
         <div>
-          <h2 className="text-xl font-bold mb-4">Game Modal Content</h2>
+          <h2 className="text-xl font-bold mb-4">Games from </h2>
           <ul className="space-y-2">
             {data.map((item, index) => {
               const whitePlayer = item.white.username;

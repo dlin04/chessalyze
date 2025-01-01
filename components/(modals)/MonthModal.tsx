@@ -30,7 +30,7 @@ export const MonthModal: React.FC<MonthModalProps> = ({
         },
       });
       const data = await res.json();
-      setGameModalData(data.games);
+      setGameModalData(data.games.reverse());
       setIsGameModalOpen(true);
     } catch (error) {
       console.error(error);

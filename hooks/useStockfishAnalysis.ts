@@ -9,6 +9,7 @@ interface StockfishType {
 
 export const useStockfishAnalysis = (selectedGamePGN: string) => {
   const [allStockfishRes, setAllStockfishRes] = useState<StockfishType[]>([]);
+  const [allPositions, setAllPositions] = useState<string[]>([]);
   const [positionsCount, setPositionsCount] = useState<number>(0);
   const [responsesCount, setResponsesCount] = useState<number>(0);
   const [analysisComplete, setAnalysisComplete] = useState<boolean>(false);
@@ -21,13 +22,14 @@ export const useStockfishAnalysis = (selectedGamePGN: string) => {
         setIsLoading(true);
         setPGN("");
         setAllStockfishRes([]);
+        setAllPositions([]);
         setAnalysisComplete(false);
 
         const chess = new Chess();
         const allPositions: string[] = [];
 
         chess.loadPgn(selectedGamePGN);
-        const moves = chess.history();
+        const moves = chess.history(); 
         const lastMoveIndex = moves.length - 1;
 
         chess.reset();
@@ -47,6 +49,7 @@ export const useStockfishAnalysis = (selectedGamePGN: string) => {
           }
         });
 
+        setAllPositions(allPositions);
         setPGN(chess.pgn());
         setPositionsCount(allPositions.length);
         setResponsesCount(0);
@@ -75,5 +78,5 @@ export const useStockfishAnalysis = (selectedGamePGN: string) => {
     }
   }, [responsesCount, positionsCount]);
 
-  return { isLoading, analysisComplete, allStockfishRes, PGN };
+  return { isLoading, analysisComplete, allPositions, allStockfishRes, PGN };
 };

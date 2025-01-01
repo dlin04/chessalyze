@@ -16,19 +16,19 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now()) @map(name: "created_at")
-  games     Game[]   @relation("UserGames")
+  // games     Game[]   @relation("UserGames")
 }
 
-model Game {
-  id            String   @id @default(cuid())
-  gameDate      String
-  whiteRating   Int
-  whitePlayer   String
-  blackRating   Int
-  blackPlayer   String
-  fenArray      String[]
-  analysisArray String[]
-  createdAt     DateTime @default(now()) @map(name: "created_at")
-  userId        String
-  user          User     @relation("UserGames", fields: [userId], references: [id])
-}
+// model Game {
+//   id            String   @id @default(cuid())
+//   gameDate      String
+//   whiteRating   Int
+//   whitePlayer   String
+//   blackRating   Int
+//   blackPlayer   String
+//   fenArray      String[]
+//   analysisArray String[]
+//   createdAt     DateTime @default(now()) @map(name: "created_at")
+//   userId        String
+//   user          User     @relation("UserGames", fields: [userId], references: [id])
+// }

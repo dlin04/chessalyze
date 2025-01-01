@@ -8,7 +8,7 @@ export const Navbar = () => {
   const router = useRouter();
 
   const handleSignOut = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
     setIsAuthenticated(false);
     window.location.reload();
   };
