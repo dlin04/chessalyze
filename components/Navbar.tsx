@@ -1,16 +1,14 @@
 "use client";
 
-import { useAuth } from "@/app/context/AuthContext"; // Replace with your actual path
+import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
-  const { isAuthenticated, setIsAuthenticated } = useAuth();
+  const { data: session } = useSession();
   const router = useRouter();
 
   const handleSignOut = () => {
-    localStorage.removeItem("accessToken");
-    setIsAuthenticated(false);
-    window.location.reload();
+    signOut({ callbackUrl: "/" });
   };
 
   const handleClickSaved = () => {
@@ -26,7 +24,7 @@ export const Navbar = () => {
         Chessalyze
       </div>
       <div className="flex space-x-4">
-        {!isAuthenticated ? (
+        {!session ? (
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => router.push("/auth")}

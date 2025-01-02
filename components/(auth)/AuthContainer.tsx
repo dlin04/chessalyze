@@ -1,38 +1,38 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { SignInForm } from "./SignInForm";
-import { SignUpForm } from "./SignUpForm";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export const AuthContainer = () => {
-  const [isSignUp, setIsSignUp] = useState<boolean>(false);
-
+  const { data: session } = useSession();
   const router = useRouter();
 
-  const toggleAuthMode = () => {
-    setIsSignUp(!isSignUp);
+  const handleSignIn = async () => {
+    await signIn("google");
+  };
+  const handleSignOut = async () => {
+    await signOut();
   };
 
-  const handleClick = () => {
+  const handleContinueWithoutAccount = () => {
     router.push("/");
   };
 
   return (
     <>
-      <h2>Welcome to Chessalyze!</h2>
-      <p>
-        An account would allow you to store analzyed games, but isn&#39;t
-        necessary.
-      </p>
-      <div>
-        {isSignUp ? (
-          <SignUpForm toggleAuthMode={toggleAuthMode} />
-        ) : (
-          <SignInForm toggleAuthMode={toggleAuthMode} />
-        )}
-      </div>
-      <button onClick={handleClick}>Continue w/o an account</button>
+      {session ? (
+        <div>
+          <p>Signed in as {session.user?.name}</p>
+          <button onClick={handleSignOut}>Sign Out</button>
+        </div>
+      ) : (
+        <div>
+          <button onClick={handleSignIn}>Sign in with Google</button>
+          <button onClick={handleContinueWithoutAccount}>
+            Continue without Account
+          </button>
+        </div>
+      )}
     </>
   );
 };
