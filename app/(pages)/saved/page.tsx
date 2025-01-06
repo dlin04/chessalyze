@@ -8,7 +8,7 @@ export default function Saved() {
     <>
       <div>
         {session ? (
-          <div>signed in, view saved</div>
+          <div>Previously Analyzed:</div>
         ) : (
           <div>
             To view previously analyzed games, please consider signing in with
