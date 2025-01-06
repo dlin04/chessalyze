@@ -1,33 +1,19 @@
 "use client";
 
 import { AuthContainer } from "@/components/(auth)/AuthContainer";
-import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Auth() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        const currentTime = Date.now() / 1000;
-
-        if (decoded.exp && decoded.exp > currentTime) {
-          setIsAuthenticated(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }, []);
+  const { data: session } = useSession();
 
   return (
     <>
-      <div>auth page</div>
-      {isAuthenticated ? (
-        <div>You are already authenticated.</div>
+      {session ? (
+        <div>
+          You&apos;re currently signed in with your Google account.
+          <br></br>To sign out, navigate the top right of the page.
+          <br></br>Thank you for using Chessalyze!
+        </div>
       ) : (
         <AuthContainer />
       )}

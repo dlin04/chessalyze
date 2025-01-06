@@ -24,14 +24,7 @@ export const Navbar = () => {
         Chessalyze
       </div>
       <div className="flex space-x-4">
-        {!session ? (
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => router.push("/auth")}
-          >
-            Sign In
-          </button>
-        ) : (
+        {session ? (
           <>
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -44,6 +37,15 @@ export const Navbar = () => {
               onClick={handleSignOut}
             >
               Sign Out
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => router.push("/auth")}
+            >
+              Sign In
             </button>
           </>
         )}

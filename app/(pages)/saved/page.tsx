@@ -1,11 +1,21 @@
 "use client";
-
-import { useAuth } from "@/app/context/AuthContext";
+import { useSession } from "next-auth/react";
 
 export default function Saved() {
-  const { isAuthenticated } = useAuth();
+  const { data: session } = useSession();
 
   return (
-    <>{isAuthenticated ? <div>signed in</div> : <div>not signed in</div>}</>
+    <>
+      <div>
+        {session ? (
+          <div>signed in, view saved</div>
+        ) : (
+          <div>
+            To view previously analyzed games, please consider signing in with
+            your Google account. Thank you!
+          </div>
+        )}
+      </div>
+    </>
   );
 }
