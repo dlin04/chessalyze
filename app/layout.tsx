@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Session } from "next-auth";
 import { Navbar } from "@/components/Navbar";
 import { Provider } from "@/components/Provider";
 
@@ -27,17 +26,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  session,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-  session: Session | null;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Provider session={session}>
+        <Provider>
           <Navbar />
           {children}
         </Provider>
