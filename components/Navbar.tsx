@@ -18,7 +18,7 @@ export const Navbar = () => {
   return (
     <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
       <div
-        className="cursor-pointer text-lg font-bold"
+        className="cursor-pointer text-3xl font-bold"
         onClick={() => router.push("/")}
       >
         Chessalyze
@@ -27,13 +27,13 @@ export const Navbar = () => {
         {session ? (
           <>
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xl"
               onClick={handleClickSaved}
             >
               Saved
             </button>
             <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-xl"
               onClick={handleSignOut}
             >
               Sign Out
@@ -42,7 +42,7 @@ export const Navbar = () => {
         ) : (
           <>
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xl"
               onClick={() => router.push("/auth")}
             >
               Sign In

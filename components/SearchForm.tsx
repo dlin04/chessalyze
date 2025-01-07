@@ -17,7 +17,6 @@ export const SearchForm = ({
     e.preventDefault();
 
     if (gameUsername.trim() === "") {
-      alert("Please fill the username field.");
       return;
     }
 
@@ -50,15 +49,18 @@ export const SearchForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="flex gap-2" onSubmit={handleSubmit}>
       <input
+        className="border border-gray-300 rounded-lg py-1 px-2"
         name="username_field"
         type="text"
         placeholder="Chess.com username..."
         value={gameUsername}
         onChange={(e) => setGameUsername(e.target.value)}
       />
-      <button type="submit">Find Games</button>
+      <button className="bg-lime-500 rounded py-1 px-2" type="submit">
+        Find Games
+      </button>
     </form>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthContainer } from "@/components/(auth)/AuthContainer";
+import { AuthContainer } from "@/components/AuthContainer";
 import { useSession } from "next-auth/react";
 
 export default function Auth() {

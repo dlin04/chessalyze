@@ -1,56 +1,50 @@
 import { useState, useEffect } from "react";
 import { Chess } from "chess.js";
+import { useSession } from "next-auth/react";
 
 interface StockfishType {
+  success: boolean;
   evaluation: number;
+  mate: number | null;
   bestmove: string;
-  continuation: string;
+  continuation: string | null;
 }
 
 export const useStockfishAnalysis = (selectedGamePGN: string) => {
+  const { data: session } = useSession();
+
   const [allStockfishRes, setAllStockfishRes] = useState<StockfishType[]>([]);
   const [allPositions, setAllPositions] = useState<string[]>([]);
   const [positionsCount, setPositionsCount] = useState<number>(0);
   const [responsesCount, setResponsesCount] = useState<number>(0);
   const [analysisComplete, setAnalysisComplete] = useState<boolean>(false);
-  const [PGN, setPGN] = useState<string>(selectedGamePGN);
+  const [PGN, setPGN] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedGamePGN) {
       const fetchStockfishRes = async () => {
         setIsLoading(true);
-        setPGN("");
+        setPGN([]);
         setAllStockfishRes([]);
         setAllPositions([]);
         setAnalysisComplete(false);
 
         const chess = new Chess();
         const allPositions: string[] = [];
+        allPositions.push(chess.fen());
 
         chess.loadPgn(selectedGamePGN);
-        const moves = chess.history(); 
-        const lastMoveIndex = moves.length - 1;
+        const moves = chess.history();
 
         chess.reset();
-        moves.forEach((move, index) => {
+        moves.forEach((move) => {
+          setPGN((prevMoves) => [...prevMoves, move]);
           chess.move(move);
           allPositions.push(chess.fen());
-
-          if (
-            index === lastMoveIndex &&
-            (chess.isCheckmate() ||
-              chess.isDraw() ||
-              chess.isInsufficientMaterial() ||
-              chess.isStalemate() ||
-              chess.isThreefoldRepetition())
-          ) {
-            allPositions.pop();
-          }
         });
 
         setAllPositions(allPositions);
-        setPGN(chess.pgn());
         setPositionsCount(allPositions.length);
         setResponsesCount(0);
 
@@ -64,10 +58,8 @@ export const useStockfishAnalysis = (selectedGamePGN: string) => {
             console.error(error);
           }
         }
-
         setIsLoading(false);
       };
-
       fetchStockfishRes();
     }
   }, [selectedGamePGN]);
