@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Chess } from "chess.js";
 import { useSession } from "next-auth/react";
+import { Player } from "@/types/ModalTypes";
 
 interface StockfishType {
   success: boolean;
@@ -10,7 +11,12 @@ interface StockfishType {
   continuation: string | null;
 }
 
-export const useStockfishAnalysis = (selectedGamePGN: string) => {
+export const useStockfishAnalysis = (
+  selectedGamePGN: string,
+  gameUUID: string,
+  whitePlayer: Player | null,
+  blackPlayer: Player | null
+) => {
   const { data: session } = useSession();
 
   const [allStockfishRes, setAllStockfishRes] = useState<StockfishType[]>([]);
@@ -76,8 +82,33 @@ export const useStockfishAnalysis = (selectedGamePGN: string) => {
     if (positionsCount > 0 && responsesCount === positionsCount) {
       setAnalysisComplete(true);
       if (session) {
-        // add it to users database
-        // api
+        const gameData = {
+          gameUUID: gameUUID,
+          whitePlayer: whitePlayer?.username || "",
+          whiteRating: whitePlayer?.rating || 0,
+          blackPlayer: blackPlayer?.username || "",
+          blackRating: blackPlayer?.rating || 0,
+          positions: allPositions,
+          bestMoves: allStockfishRes,
+        };
+
+        const saveGame = async () => {
+          try {
+            await fetch("/api/save/add", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userEmail: session.user?.email,
+                gameData,
+              }),
+            });
+          } catch (error) {
+            console.error("Error saving game:", error);
+          }
+        };
+        saveGame();
       }
     }
   }, [responsesCount, positionsCount]);

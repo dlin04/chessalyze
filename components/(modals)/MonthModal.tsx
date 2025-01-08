@@ -1,14 +1,14 @@
 "use client";
 import { GameModal } from "./GamesModal";
 import { useState } from "react";
-import { GameModalData } from "@/types/ModalTypes";
+import { Player, GameModalData } from "@/types/ModalTypes";
 
 interface MonthModalProps {
   selectedPlayer: string;
   isOpen: boolean;
   onClose: () => void;
   data: string[];
-  onGameSelect: (pgn: string) => void;
+  onGameSelect: (pgn: string, white: Player, black: Player) => void;
 }
 
 export const MonthModal: React.FC<MonthModalProps> = ({

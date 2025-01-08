@@ -3,22 +3,33 @@ import { Chessboard } from "react-chessboard";
 import { useState } from "react";
 import { SearchForm } from "@/components/SearchForm";
 import { MonthModal } from "@/components/(modals)/MonthModal";
-import { LoadingModal } from "@/components/(modals)/LoadingModal"; // Import the LoadingModal
+import { LoadingModal } from "@/components/(modals)/LoadingModal";
 import { useStockfishAnalysis } from "@/hooks/useStockfishAnalysis";
+import { Player } from "@/types/ModalTypes";
 
 export default function Home() {
   const [gameUsername, setGameUsername] = useState<string>("");
   const [monthModalData, setMonthModalData] = useState<string[]>([]);
   const [isMonthModalOpen, setIsMonthModalOpen] = useState<boolean>(false);
+
   const [selectedGamePGN, setSelectedGamePGN] = useState<string>("");
+  const [whitePlayer, setWhitePlayer] = useState<Player | null>(null);
+  const [blackPlayer, setBlackPlayer] = useState<Player | null>(null);
+
   const [currentPosition, setCurrentPosition] = useState(0);
   const [orientation, setOrientation] = useState<"white" | "black">("white");
 
   const { isLoading, analysisComplete, allPositions, allStockfishRes, PGN } =
-    useStockfishAnalysis(selectedGamePGN);
+    useStockfishAnalysis(selectedGamePGN, whitePlayer, blackPlayer);
 
-  const handleGameSelection = (selectPGN: string) => {
+  const handleGameSelection = (
+    selectPGN: string,
+    white: Player,
+    black: Player
+  ) => {
     setSelectedGamePGN(selectPGN);
+    setWhitePlayer(white);
+    setBlackPlayer(black);
     setIsMonthModalOpen(false);
   };
 
@@ -59,15 +70,50 @@ export default function Home() {
   return (
     <>
       <div className="flex justify-center gap-4 mt-10">
-        <div className="w-[500px] h-[500px]">
-          <Chessboard
-            id="BasicBoard"
-            arePiecesDraggable={false}
-            position={allPositions[currentPosition] || "start"}
-            boardOrientation={orientation}
-          />
+        <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center mb-4">
+            {orientation === "white" ? (
+              <>
+                <div>
+                  {blackPlayer?.username} {blackPlayer?.rating}
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  {whitePlayer?.username} {whitePlayer?.rating}
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="w-[500px] h-[500px]">
+            <Chessboard
+              id="BasicBoard"
+              arePiecesDraggable={false}
+              position={allPositions[currentPosition] || "start"}
+              boardOrientation={orientation}
+            />
+          </div>
+
+          <div className="flex flex-col items-center mt-4">
+            {orientation === "white" ? (
+              <>
+                <div>
+                  {whitePlayer?.username} {whitePlayer?.rating}
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  {blackPlayer?.username} {blackPlayer?.rating}
+                </div>
+              </>
+            )}
+          </div>
         </div>
-        <div className="flex flex-col items-center gap-2">
+
+        <div className="flex flex-col items-center gap-2 mt-10">
           <SearchForm
             gameUsername={gameUsername}
             setGameUsername={setGameUsername}

@@ -1,12 +1,13 @@
 "use client";
 import { GameModalData } from "@/types/ModalTypes";
+import { Player } from "@/types/ModalTypes";
 
 interface GamesModalProps {
   selectedPlayer: string;
   isOpen: boolean;
   onClose: () => void;
   data: GameModalData[];
-  onGameSelect: (pgn: string) => void;
+  onGameSelect: (pgn: string, white: Player, black: Player) => void;
 }
 
 export const GameModal: React.FC<GamesModalProps> = ({
@@ -19,7 +20,19 @@ export const GameModal: React.FC<GamesModalProps> = ({
   if (!isOpen) return null;
 
   const handleSelectGame = (game: GameModalData) => {
-    onGameSelect(game.pgn.split("\n")[22]);
+    const whitePlayer: Player = {
+      rating: game.white.rating,
+      result: game.white.result,
+      username: game.white.username,
+    };
+
+    const blackPlayer: Player = {
+      rating: game.black.rating,
+      result: game.black.result,
+      username: game.black.username,
+    };
+
+    onGameSelect(game.pgn.split("\n")[22], whitePlayer, blackPlayer);
     onClose();
   };
 
