@@ -25,8 +25,16 @@ export const useStockfishAnalysis = (selectedGamePGN: string) => {
     if (selectedGamePGN) {
       const fetchStockfishRes = async () => {
         setIsLoading(true);
-        setPGN([]);
-        setAllStockfishRes([]);
+        setPGN([""]);
+        setAllStockfishRes([
+          {
+            success: true,
+            evaluation: 0,
+            mate: null,
+            bestmove: "",
+            continuation: null,
+          },
+        ]);
         setAllPositions([]);
         setAnalysisComplete(false);
 
@@ -67,6 +75,10 @@ export const useStockfishAnalysis = (selectedGamePGN: string) => {
   useEffect(() => {
     if (positionsCount > 0 && responsesCount === positionsCount) {
       setAnalysisComplete(true);
+      if (session) {
+        // add it to users database
+        // api
+      }
     }
   }, [responsesCount, positionsCount]);
 

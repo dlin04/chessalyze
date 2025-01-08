@@ -51,14 +51,14 @@ export const SearchForm = ({
   return (
     <form className="flex gap-2" onSubmit={handleSubmit}>
       <input
-        className="border border-gray-300 rounded-lg py-1 px-2"
+        className="border border-gray-300 rounded-lg py-2 px-2"
         name="username_field"
         type="text"
         placeholder="Chess.com username..."
         value={gameUsername}
         onChange={(e) => setGameUsername(e.target.value)}
       />
-      <button className="bg-lime-500 rounded py-1 px-2" type="submit">
+      <button className="bg-lime-500 rounded-lg px-2" type="submit">
         Find Games
       </button>
     </form>
