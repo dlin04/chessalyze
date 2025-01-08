@@ -13,7 +13,6 @@ interface StockfishType {
 
 export const useStockfishAnalysis = (
   selectedGamePGN: string,
-  gameUUID: string,
   whitePlayer: Player | null,
   blackPlayer: Player | null
 ) => {
@@ -83,7 +82,6 @@ export const useStockfishAnalysis = (
       setAnalysisComplete(true);
       if (session) {
         const gameData = {
-          gameUUID: gameUUID,
           whitePlayer: whitePlayer?.username || "",
           whiteRating: whitePlayer?.rating || 0,
           blackPlayer: blackPlayer?.username || "",
