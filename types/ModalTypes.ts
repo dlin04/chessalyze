@@ -5,7 +5,7 @@ export interface Player {
 }
 
 export interface GameModalData {
-  url: string;
+  uuid: string;
   white: Player;
   black: Player;
   pgn: string;

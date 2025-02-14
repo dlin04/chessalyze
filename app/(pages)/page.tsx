@@ -12,6 +12,7 @@ export default function Home() {
   const [monthModalData, setMonthModalData] = useState<string[]>([]);
   const [isMonthModalOpen, setIsMonthModalOpen] = useState<boolean>(false);
 
+  const [uuid, setUUID] = useState<string>("");
   const [selectedGamePGN, setSelectedGamePGN] = useState<string>("");
   const [whitePlayer, setWhitePlayer] = useState<Player | null>(null);
   const [blackPlayer, setBlackPlayer] = useState<Player | null>(null);
@@ -20,13 +21,15 @@ export default function Home() {
   const [orientation, setOrientation] = useState<"white" | "black">("white");
 
   const { isLoading, analysisComplete, allPositions, allStockfishRes, PGN } =
-    useStockfishAnalysis(selectedGamePGN, whitePlayer, blackPlayer);
+    useStockfishAnalysis(uuid, selectedGamePGN, whitePlayer, blackPlayer);
 
   const handleGameSelection = (
+    uuid: string,
     selectPGN: string,
     white: Player,
     black: Player
   ) => {
+    setUUID(uuid);
     setSelectedGamePGN(selectPGN);
     setWhitePlayer(white);
     setBlackPlayer(black);

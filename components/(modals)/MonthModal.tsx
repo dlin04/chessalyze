@@ -8,7 +8,12 @@ interface MonthModalProps {
   isOpen: boolean;
   onClose: () => void;
   data: string[];
-  onGameSelect: (pgn: string, white: Player, black: Player) => void;
+  onGameSelect: (
+    uuid: string,
+    pgn: string,
+    white: Player,
+    black: Player
+  ) => void;
 }
 
 export const MonthModal: React.FC<MonthModalProps> = ({

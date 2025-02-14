@@ -12,6 +12,7 @@ interface StockfishType {
 }
 
 export const useStockfishAnalysis = (
+  uuid: string,
   selectedGamePGN: string,
   whitePlayer: Player | null,
   blackPlayer: Player | null
@@ -46,7 +47,6 @@ export const useStockfishAnalysis = (
         const chess = new Chess();
         const allPositions: string[] = [];
         allPositions.push(chess.fen());
-
         chess.loadPgn(selectedGamePGN);
         const moves = chess.history();
 
@@ -82,6 +82,7 @@ export const useStockfishAnalysis = (
       setAnalysisComplete(true);
       if (session) {
         const gameData = {
+          uuid: uuid,
           whitePlayer: whitePlayer?.username || "",
           whiteRating: whitePlayer?.rating || 0,
           blackPlayer: blackPlayer?.username || "",

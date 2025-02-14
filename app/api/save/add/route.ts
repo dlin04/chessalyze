@@ -16,8 +16,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const newGame = await prisma.game.create({
+    const existingGame = await prisma.game.findFirst({
+      where: {
+        id: gameData.uuid,
+        userId: user.id,
+      },
+    });
+
+    if (existingGame) {
+      return NextResponse.json(
+        { success: false, error: "Game already exists for this user" },
+        { status: 400 }
+      );
+    }
+
+    await prisma.game.create({
       data: {
+        id: gameData.uuid,
         userId: user.id,
         whitePlayer: gameData.whitePlayer,
         whiteRating: gameData.whiteRating,
@@ -28,7 +43,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ success: true, game: newGame });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error saving game:", error);
     return NextResponse.json(

@@ -7,7 +7,12 @@ interface GamesModalProps {
   isOpen: boolean;
   onClose: () => void;
   data: GameModalData[];
-  onGameSelect: (pgn: string, white: Player, black: Player) => void;
+  onGameSelect: (
+    uuid: string,
+    pgn: string,
+    white: Player,
+    black: Player
+  ) => void;
 }
 
 export const GameModal: React.FC<GamesModalProps> = ({
@@ -32,7 +37,7 @@ export const GameModal: React.FC<GamesModalProps> = ({
       username: game.black.username,
     };
 
-    onGameSelect(game.pgn.split("\n")[22], whitePlayer, blackPlayer);
+    onGameSelect(game.uuid, game.pgn.split("\n")[22], whitePlayer, blackPlayer);
     onClose();
   };
 

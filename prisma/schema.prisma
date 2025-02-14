@@ -16,7 +16,7 @@ model User {
 }
 
 model Game {
-  id          String   @id @default(cuid())
+  id          String   @id // will be using uuid from chess.com
   createdAt   DateTime @default(now()) @map(name: "created_at")
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
