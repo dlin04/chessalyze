@@ -74,17 +74,17 @@ export default function Home() {
     <>
       <div className="flex justify-center gap-4 mt-10">
         <div className="flex flex-col items-center">
-          <div className="flex flex-col items-center mb-4">
+          <div className="flex flex-col mb-4">
             {orientation === "white" ? (
               <>
                 <div>
-                  {blackPlayer?.username} {blackPlayer?.rating}
+                  Black Player: {blackPlayer?.username} {blackPlayer?.rating}
                 </div>
               </>
             ) : (
               <>
                 <div>
-                  {whitePlayer?.username} {whitePlayer?.rating}
+                  White Player: {whitePlayer?.username} {whitePlayer?.rating}
                 </div>
               </>
             )}
@@ -99,17 +99,17 @@ export default function Home() {
             />
           </div>
 
-          <div className="flex flex-col items-center mt-4">
+          <div className="flex flex-col mt-4">
             {orientation === "white" ? (
               <>
                 <div>
-                  {whitePlayer?.username} {whitePlayer?.rating}
+                  White Player: {whitePlayer?.username} {whitePlayer?.rating}
                 </div>
               </>
             ) : (
               <>
                 <div>
-                  {blackPlayer?.username} {blackPlayer?.rating}
+                  Black Player: {blackPlayer?.username} {blackPlayer?.rating}
                 </div>
               </>
             )}

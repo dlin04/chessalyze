@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Provider } from "@/components/Provider";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Chessalyze",
@@ -35,6 +36,7 @@ export default function RootLayout({
         <Provider>
           <Navbar />
           {children}
+          <Analytics />
         </Provider>
       </body>
     </html>

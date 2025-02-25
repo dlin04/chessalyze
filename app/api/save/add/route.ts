@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const existingGame = await prisma.game.findFirst({
       where: {
         id: gameData.uuid,
-        userId: user.id,
+        userEmail: user.email,
       },
     });
 
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     await prisma.game.create({
       data: {
         id: gameData.uuid,
-        userId: user.id,
+        userEmail: user.email,
         whitePlayer: gameData.whitePlayer,
         whiteRating: gameData.whiteRating,
         blackPlayer: gameData.blackPlayer,
