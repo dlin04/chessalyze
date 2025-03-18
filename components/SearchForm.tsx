@@ -49,17 +49,20 @@ export const SearchForm = ({
   };
 
   return (
-    <form className="flex gap-2" onSubmit={handleSubmit}>
+    <form className="flex items-center" onSubmit={handleSubmit}>
       <input
-        className="border border-gray-300 rounded-lg py-2 px-2"
+        className="border border-gray-300 rounded-l-xl py-2 px-4 w-full max-w-[400px] focus:outline-none focus:ring-2 focus:ring-lime-500"
         name="username_field"
         type="text"
         placeholder="Chess.com username..."
         value={gameUsername}
         onChange={(e) => setGameUsername(e.target.value)}
       />
-      <button className="bg-lime-500 rounded-lg px-2" type="submit">
-        Find Games
+      <button
+        className="bg-lime-500 border border-gray-300 rounded-r-xl px-4 py-2"
+        type="submit"
+      >
+        Find
       </button>
     </form>
   );

@@ -74,16 +74,16 @@ export default function Home() {
     <>
       <div className="flex justify-center gap-4 mt-10">
         <div className="flex flex-col items-center">
-          <div className="flex flex-col mb-4">
+          <div className="flex flex-col w-full max-w-[500px]">
             {orientation === "white" ? (
               <>
-                <div>
+                <div className="bg-black p-2 text-left text-white">
                   Black Player: {blackPlayer?.username} {blackPlayer?.rating}
                 </div>
               </>
             ) : (
               <>
-                <div>
+                <div className="bg-white p-2 text-left text-black">
                   White Player: {whitePlayer?.username} {whitePlayer?.rating}
                 </div>
               </>
@@ -99,16 +99,16 @@ export default function Home() {
             />
           </div>
 
-          <div className="flex flex-col mt-4">
+          <div className="flex flex-col w-full max-w-[500px]">
             {orientation === "white" ? (
               <>
-                <div>
+                <div className="bg-white p-2 text-left text-black">
                   White Player: {whitePlayer?.username} {whitePlayer?.rating}
                 </div>
               </>
             ) : (
               <>
-                <div>
+                <div className="bg-black p-2 text-left text-white">
                   Black Player: {blackPlayer?.username} {blackPlayer?.rating}
                 </div>
               </>

@@ -1,5 +1,6 @@
 "use client";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 interface Game {
@@ -19,7 +20,7 @@ export default function Saved() {
     const fetchGames = async () => {
       try {
         const response = await fetch(
-          `/api/save/get?email=${session.user?.email}`
+          `/api/save/get_all?email=${session.user?.email}`
         );
         const data = await response.json();
         setGames(data.games);
@@ -48,13 +49,18 @@ export default function Saved() {
             {games.length > 0 ? (
               games.map((game) => (
                 <li key={game.id} className="mb-1">
-                  <span className="w-48 inline-block">
-                    {game.whitePlayer} ({game.whiteRating})
-                  </span>
-                  <span className="w-24 inline-block">vs</span>
-                  <span className="w-48 inline-block">
-                    {game.blackPlayer} ({game.blackRating})
-                  </span>
+                  <Link
+                    href={`/saved/${game.id}`}
+                    className="text-blue-500 hover:underline"
+                  >
+                    <span className="w-48 inline-block">
+                      {game.whitePlayer} ({game.whiteRating})
+                    </span>
+                    <span className="w-24 inline-block">vs</span>
+                    <span className="w-48 inline-block">
+                      {game.blackPlayer} ({game.blackRating})
+                    </span>
+                  </Link>
                 </li>
               ))
             ) : (

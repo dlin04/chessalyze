@@ -11,7 +11,7 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen }) => {
         <p className="mb-4 text-sm text-gray-600">
           Your game is being analyzed. <br></br>
           On average, each position takes one second.<br></br>
-          Please wait.
+          Thanks for your patience!
         </p>
         <div className="flex justify-center space-x-2">
           <div

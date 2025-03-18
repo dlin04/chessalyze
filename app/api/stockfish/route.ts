@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       });
     } else {
       const stockfishRes = await fetch(
-        `https://stockfish.online/api/s/v2.php?fen=${fenPosition}&depth=15`
+        `https://stockfish.online/api/s/v2.php?fen=${fenPosition}&depth=10`
       );
       const stockfishData = await stockfishRes.json();
       const bestMovePart = stockfishData.bestmove.split(" ").slice(1).join(" ");
