@@ -4,6 +4,7 @@ import { useState } from "react";
 import { SearchForm } from "@/components/SearchForm";
 import { MonthModal } from "@/components/(modals)/MonthModal";
 import { LoadingModal } from "@/components/(modals)/LoadingModal";
+import { ToolBar } from "@/components/ToolBar";
 import { useStockfishAnalysis } from "@/hooks/useStockfishAnalysis";
 import { Player } from "@/types/ModalTypes";
 
@@ -56,6 +57,13 @@ export default function Home() {
     }
   };
 
+  const getPlayedMove = () => {
+    if (PGN[currentPosition]) {
+      return PGN[currentPosition];
+    }
+    return null;
+  };
+
   const getBestMove = () => {
     if (allStockfishRes[currentPosition]) {
       return allStockfishRes[currentPosition].bestmove;
@@ -63,9 +71,9 @@ export default function Home() {
     return null;
   };
 
-  const getPlayedMove = () => {
-    if (PGN[currentPosition]) {
-      return PGN[currentPosition];
+  const getEvaluation = () => {
+    if (allStockfishRes[currentPosition]) {
+      return allStockfishRes[currentPosition].evaluation;
     }
     return null;
   };
@@ -126,30 +134,26 @@ export default function Home() {
 
           {analysisComplete && (
             <>
-              <div className="flex gap-4">
-                <button
-                  className="px-4 py-2 border border-gray-300 rounded-lg"
-                  onClick={toggleBoardOrientation}
-                >
-                  Switch
-                </button>
-                <button
-                  className="px-4 py-2 border border-gray-300 rounded-lg"
-                  onClick={prevPosition}
-                >
-                  Prev
-                </button>
-                <button
-                  className="px-4 py-2 border border-gray-300 rounded-lg"
-                  onClick={nextPosition}
-                >
-                  Next
-                </button>
-              </div>
-
-              <div className="mt-4">
-                <h3>Best Move: {getBestMove()}</h3>
-                <h3>Played Move: {getPlayedMove()}</h3>
+              <ToolBar
+                onSwap={toggleBoardOrientation}
+                onFirst={() => setCurrentPosition(0)}
+                onPrev={prevPosition}
+                onNext={nextPosition}
+                onLast={() => setCurrentPosition(allPositions.length - 1)}
+              />
+              <div className="mt-4 w-full text-left">
+                <div className="flex items-center ml-1">
+                  <span className="w-28 font-semibold">Played Move</span>
+                  <h3 className="flex-1">{getPlayedMove()}</h3>
+                </div>
+                <div className="flex items-center ml-1">
+                  <span className="w-28 font-semibold">Best Move</span>
+                  <h3 className="flex-1">{getBestMove()}</h3>
+                </div>
+                <div className="flex items-center ml-1">
+                  <span className="w-28 font-semibold">Evaluation</span>
+                  <h3 className="flex-1">{getEvaluation()}</h3>
+                </div>
               </div>
             </>
           )}

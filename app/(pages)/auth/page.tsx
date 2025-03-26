@@ -9,7 +9,7 @@ export default function Auth() {
   return (
     <>
       {session ? (
-        <div className="flex items-start justify-center min-h-screen bg-gray-100 pt-20">
+        <div className="flex items-start justify-center min-h-screen pt-20">
           <div className="text-center p-4 bg-white rounded shadow-md w-[500px]">
             <p>
               You&apos;re currently signed in with your Google account.
