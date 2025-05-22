@@ -17,7 +17,7 @@ Chessalyze is a web application designed to replicate and enhance the Game Revie
 - **React** - UI components and state management
 - **Prisma** - ORM for database management
 - **PostgreSQL** - Relational database to store user and game data
-- [Stockfish REST API](https://stockfish.online/) — For chess engine analysis
+- [Stockfish REST API](https://stockfish.online/) - For chess engine analysis
 
 ## Getting Started
 
