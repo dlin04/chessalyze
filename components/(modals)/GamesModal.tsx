@@ -1,6 +1,6 @@
 "use client";
-import { GameModalData } from "@/types/ModalTypes";
-import { Player } from "@/types/ModalTypes";
+import { GameModalData } from "@/types/Types";
+import { Player } from "@/types/Types";
 
 interface GamesModalProps {
   selectedPlayer: string;

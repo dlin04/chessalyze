@@ -1,7 +1,7 @@
 "use client";
 import { GameModal } from "./GamesModal";
 import { useState } from "react";
-import { Player, GameModalData } from "@/types/ModalTypes";
+import { Player, GameModalData } from "@/types/Types";
 
 interface MonthModalProps {
   selectedPlayer: string;

@@ -6,23 +6,23 @@ import { MonthModal } from "@/components/(modals)/MonthModal";
 import { LoadingModal } from "@/components/(modals)/LoadingModal";
 import { ToolBar } from "@/components/ToolBar";
 import { useStockfishAnalysis } from "@/hooks/useStockfishAnalysis";
-import { Player } from "@/types/ModalTypes";
+import { Player } from "@/types/Types";
+import { useGameContext } from "@/context/GameContext";
 
 export default function Home() {
   const [gameUsername, setGameUsername] = useState<string>("");
   const [monthModalData, setMonthModalData] = useState<string[]>([]);
   const [isMonthModalOpen, setIsMonthModalOpen] = useState<boolean>(false);
-
-  const [uuid, setUUID] = useState<string>("");
   const [selectedGamePGN, setSelectedGamePGN] = useState<string>("");
-  const [whitePlayer, setWhitePlayer] = useState<Player | null>(null);
-  const [blackPlayer, setBlackPlayer] = useState<Player | null>(null);
 
+  const { uuid, whitePlayer, blackPlayer, bestMoves, positions, setGameData } =
+    useGameContext();
   const [currentPosition, setCurrentPosition] = useState(0);
   const [orientation, setOrientation] = useState<"white" | "black">("white");
-
   const { isLoading, analysisComplete, allPositions, allStockfishRes, PGN } =
     useStockfishAnalysis(uuid, selectedGamePGN, whitePlayer, blackPlayer);
+  const positionsToUse = positions.length > 0 ? positions : allPositions;
+  const bestMovesToUse = bestMoves.length > 0 ? bestMoves : allStockfishRes;
 
   const handleGameSelection = (
     uuid: string,
@@ -30,13 +30,10 @@ export default function Home() {
     white: Player,
     black: Player
   ) => {
-    setUUID(uuid);
     setSelectedGamePGN(selectPGN);
-    setWhitePlayer(white);
-    setBlackPlayer(black);
+    setGameData(uuid, white, black, [], []);
     setIsMonthModalOpen(false);
   };
-
   const closeMonthModal = () => {
     setIsMonthModalOpen(false);
   };
@@ -47,33 +44,30 @@ export default function Home() {
     );
   };
   const prevPosition = () => {
-    if (currentPosition > 0 && analysisComplete) {
+    if (currentPosition > 0) {
       setCurrentPosition((prevIndex) => prevIndex - 1);
     }
   };
   const nextPosition = () => {
-    if (currentPosition < allPositions.length - 1 && analysisComplete) {
+    if (currentPosition < positionsToUse.length - 1) {
       setCurrentPosition((prevIndex) => prevIndex + 1);
     }
   };
-
   const getPlayedMove = () => {
     if (PGN[currentPosition]) {
       return PGN[currentPosition];
     }
     return null;
   };
-
   const getBestMove = () => {
-    if (allStockfishRes[currentPosition]) {
-      return allStockfishRes[currentPosition].bestmove;
+    if (bestMovesToUse[currentPosition]) {
+      return bestMovesToUse[currentPosition].bestmove;
     }
     return null;
   };
-
   const getEvaluation = () => {
-    if (allStockfishRes[currentPosition]) {
-      return allStockfishRes[currentPosition].evaluation;
+    if (bestMovesToUse[currentPosition]) {
+      return bestMovesToUse[currentPosition].evaluation;
     }
     return null;
   };
@@ -102,7 +96,7 @@ export default function Home() {
             <Chessboard
               id="BasicBoard"
               arePiecesDraggable={false}
-              position={allPositions[currentPosition] || "start"}
+              position={positionsToUse[currentPosition] || "start"}
               boardOrientation={orientation}
             />
           </div>
@@ -132,31 +126,29 @@ export default function Home() {
             setIsMonthModalOpen={setIsMonthModalOpen}
           />
 
-          {analysisComplete && (
-            <>
-              <ToolBar
-                onSwap={toggleBoardOrientation}
-                onFirst={() => setCurrentPosition(0)}
-                onPrev={prevPosition}
-                onNext={nextPosition}
-                onLast={() => setCurrentPosition(allPositions.length - 1)}
-              />
-              <div className="mt-4 w-full text-left">
-                <div className="flex items-center ml-1">
-                  <span className="w-28 font-semibold">Played Move</span>
-                  <h3 className="flex-1">{getPlayedMove()}</h3>
-                </div>
-                <div className="flex items-center ml-1">
-                  <span className="w-28 font-semibold">Best Move</span>
-                  <h3 className="flex-1">{getBestMove()}</h3>
-                </div>
-                <div className="flex items-center ml-1">
-                  <span className="w-28 font-semibold">Evaluation</span>
-                  <h3 className="flex-1">{getEvaluation()}</h3>
-                </div>
+          <>
+            <ToolBar
+              onSwap={toggleBoardOrientation}
+              onFirst={() => setCurrentPosition(0)}
+              onPrev={prevPosition}
+              onNext={nextPosition}
+              onLast={() => setCurrentPosition(positionsToUse.length - 1)}
+            />
+            <div className="mt-4 w-full text-left">
+              <div className="flex items-center ml-1">
+                <span className="w-28 font-semibold">Played Move</span>
+                <h3 className="flex-1">{getPlayedMove()}</h3>
               </div>
-            </>
-          )}
+              <div className="flex items-center ml-1">
+                <span className="w-28 font-semibold">Best Move</span>
+                <h3 className="flex-1">{getBestMove()}</h3>
+              </div>
+              <div className="flex items-center ml-1">
+                <span className="w-28 font-semibold">Evaluation</span>
+                <h3 className="flex-1">{getEvaluation()}</h3>
+              </div>
+            </div>
+          </>
         </div>
       </div>
 

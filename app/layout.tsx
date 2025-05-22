@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer"; // Import Footer
-import { Provider } from "@/components/Provider";
+import { Footer } from "@/components/Footer";
+import { Provider } from "@/context/Provider";
+import { GameProvider } from "@/context/GameContext";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
@@ -38,10 +39,12 @@ export default function RootLayout({
         style={{ fontFamily: "'Open Sans', sans-serif" }}
       >
         <Provider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <Analytics />
+          <GameProvider>
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <Analytics />
+          </GameProvider>
         </Provider>
       </body>
     </html>

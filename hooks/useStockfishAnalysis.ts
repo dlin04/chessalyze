@@ -1,15 +1,9 @@
 import { useState, useEffect } from "react";
 import { Chess } from "chess.js";
 import { useSession } from "next-auth/react";
-import { Player } from "@/types/ModalTypes";
-
-interface StockfishType {
-  success: boolean;
-  evaluation: number;
-  mate: number | null;
-  bestmove: string;
-  continuation: string | null;
-}
+import { Player } from "@/types/Types";
+import { useGameContext } from "@/context/GameContext";
+import { BestMove } from "@/types/Types";
 
 export const useStockfishAnalysis = (
   uuid: string,
@@ -18,14 +12,14 @@ export const useStockfishAnalysis = (
   blackPlayer: Player | null
 ) => {
   const { data: session } = useSession();
-
-  const [allStockfishRes, setAllStockfishRes] = useState<StockfishType[]>([]);
+  const [allStockfishRes, setAllStockfishRes] = useState<BestMove[]>([]);
   const [allPositions, setAllPositions] = useState<string[]>([]);
   const [positionsCount, setPositionsCount] = useState<number>(0);
   const [responsesCount, setResponsesCount] = useState<number>(0);
   const [analysisComplete, setAnalysisComplete] = useState<boolean>(false);
   const [PGN, setPGN] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { setGameData } = useGameContext();
 
   useEffect(() => {
     if (selectedGamePGN) {
@@ -80,6 +74,15 @@ export const useStockfishAnalysis = (
   useEffect(() => {
     if (positionsCount > 0 && responsesCount === positionsCount) {
       setAnalysisComplete(true);
+      if (uuid && whitePlayer && blackPlayer) {
+        setGameData(
+          uuid,
+          whitePlayer,
+          blackPlayer,
+          allStockfishRes,
+          allPositions
+        );
+      }
       if (session) {
         const gameData = {
           uuid: uuid,
