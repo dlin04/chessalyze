@@ -19,7 +19,7 @@ export default function Home() {
     useGameContext();
   const [currentPosition, setCurrentPosition] = useState(0);
   const [orientation, setOrientation] = useState<"white" | "black">("white");
-  const { isLoading, analysisComplete, allPositions, allStockfishRes, PGN } =
+  const { isLoading, allPositions, allStockfishRes, PGN } =
     useStockfishAnalysis(uuid, selectedGamePGN, whitePlayer, blackPlayer);
   const positionsToUse = positions.length > 0 ? positions : allPositions;
   const bestMovesToUse = bestMoves.length > 0 ? bestMoves : allStockfishRes;
