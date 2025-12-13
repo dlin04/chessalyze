@@ -37,8 +37,6 @@ export default function Home() {
   const handleGameSelect = (game: Game) => {
     setSelectedGame(game);
     setShowModal(false);
-    // TODO: Load game and start analysis
-    console.log("Selected game:", game);
   };
 
   const handleChangeUsername = () => {
@@ -60,7 +58,7 @@ export default function Home() {
       <main className="p-8">
         <div className="max-w-[1400px] mx-auto bg-panel rounded-lg p-5">
           <div className="grid grid-cols-1 lg:grid-cols-[600px_1fr] gap-6">
-            <Board />
+            <Board selectedGame={selectedGame} />
 
             <div className="bg-background rounded-lg p-5 relative">
               {!selectedGame ? (
