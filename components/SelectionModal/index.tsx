@@ -16,7 +16,7 @@ interface SelectionModalProps {
   onUsernameSubmit: (e: React.FormEvent) => void;
   onMonthSelect: (month_url: string) => void;
   onGameSelect: (game: Game) => void;
-  onCancel: () => void;
+  onCancel: (current_step: string) => void;
 }
 
 export default function SelectionModal({
@@ -44,7 +44,6 @@ export default function SelectionModal({
               hasSubmitted={hasSubmitted}
               onUsernameChange={onUsernameChange}
               onSubmit={onUsernameSubmit}
-              onCancel={onCancel}
             />
           )}
 
@@ -57,7 +56,11 @@ export default function SelectionModal({
           )}
 
           {step === "game" && (
-            <GameStep handleGameSelect={onGameSelect} games={games} />
+            <GameStep
+              handleGameSelect={onGameSelect}
+              onCancel={onCancel}
+              games={games}
+            />
           )}
         </div>
       </div>

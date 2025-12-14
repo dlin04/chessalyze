@@ -7,15 +7,12 @@ interface UsernameStepProps {
   hasSubmitted: boolean;
   onUsernameChange: (username: string) => void;
   onSubmit: (e: React.FormEvent) => void;
-  onCancel: () => void;
 }
 
 export default function UsernameStep({
   username,
-  hasSubmitted,
   onUsernameChange,
   onSubmit,
-  onCancel,
 }: UsernameStepProps) {
   return (
     <>
@@ -39,20 +36,11 @@ export default function UsernameStep({
         <button
           type="submit"
           disabled={!username.trim()}
-          className="w-full px-4 py-3 bg-status-engine text-foreground rounded font-semibold hover:bg-status-engine/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="cursor-pointer w-full px-4 py-3 bg-status-engine text-foreground rounded font-semibold hover:bg-status-engine/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           <Search size={18} />
           Load Games
         </button>
-        {hasSubmitted && (
-          <button
-            type="button"
-            onClick={onCancel}
-            className="w-full px-4 py-2 border border-interactive text-muted rounded hover:text-foreground transition-colors"
-          >
-            Cancel
-          </button>
-        )}
       </form>
     </>
   );

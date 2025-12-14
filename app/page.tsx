@@ -44,8 +44,12 @@ export default function Home() {
     setModalStep("username");
   };
 
-  const handleCancelModal = () => {
-    setModalStep("username");
+  const handleCancelModal = (current_step: string) => {
+    if (current_step == "month") {
+      setModalStep("username");
+    } else if (current_step == "game") {
+      setModalStep("month");
+    }
     setShowModal(true);
   };
 

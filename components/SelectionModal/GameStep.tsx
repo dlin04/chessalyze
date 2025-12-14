@@ -3,11 +3,16 @@
 import { Game } from "@/types";
 
 interface GameStepProps {
+  onCancel: (current_step: string) => void;
   games: Game[];
   handleGameSelect: (game: Game) => void;
 }
 
-export default function GameStep({ games, handleGameSelect }: GameStepProps) {
+export default function GameStep({
+  onCancel,
+  games,
+  handleGameSelect,
+}: GameStepProps) {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold text-foreground mb-4">
@@ -57,6 +62,12 @@ export default function GameStep({ games, handleGameSelect }: GameStepProps) {
           );
         })}
       </div>
+      <button
+        onClick={() => onCancel("game")}
+        className="cursor-pointer w-full px-4 py-2 border border-interactive text-muted rounded hover:text-foreground transition-colors mt-4"
+      >
+        Cancel
+      </button>
     </div>
   );
 }
