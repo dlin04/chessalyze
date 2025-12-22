@@ -1,5 +1,6 @@
 "use client";
 
+import { printFEN } from "@/lib/stockfish";
 import { useState } from "react";
 import { ModalStep, Game } from "@/types";
 import Board from "@/components/Board";
@@ -34,12 +35,17 @@ export default function Home() {
     setModalStep("game");
   };
 
-  const handleGameSelect = (game: Game) => {
+  const handleGameSelect = async (game: Game) => {
     setSelectedGame(game);
     setShowModal(false);
+
+    // TODO: load game and start analysis
+    console.log(game.pgn);
+    printFEN(game.pgn);
   };
 
   const handleChangeUsername = () => {
+    setSelectedGame(null);
     setShowModal(true);
     setModalStep("username");
   };
@@ -55,16 +61,16 @@ export default function Home() {
 
   return (
     <div className="bg-background min-h-screen">
-      <header className="h-[70px] bg-panel border-b border-border flex items-center px-8">
-        <h1 className="text-2xl font-bold text-foreground">Chessalyze</h1>
+      <header className="bg-panel border-border flex h-[70px] items-center border-b px-8">
+        <h1 className="text-foreground text-2xl font-bold">Chessalyze</h1>
       </header>
 
       <main className="p-8">
-        <div className="max-w-[1400px] mx-auto bg-panel rounded-lg p-5">
-          <div className="grid grid-cols-1 lg:grid-cols-[600px_1fr] gap-6">
+        <div className="bg-panel mx-auto max-w-[1300px] rounded-lg p-5">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[600px_1fr]">
             <Board selectedGame={selectedGame} />
 
-            <div className="bg-background rounded-lg p-5 relative">
+            <div className="bg-background relative min-h-[800px] rounded-lg p-5">
               {!selectedGame ? (
                 <SelectionModal
                   months={availableMonths}

@@ -26,14 +26,14 @@ export default function MonthStep({
         <button
           key={index}
           onClick={() => handleMonthSelect(month_url)}
-          className="cursor-pointer w-full px-4 py-3 bg-card text-foreground rounded border border-interactive hover:bg-interactive hover:border-status-engine transition-colors"
+          className="bg-card text-foreground border-interactive hover:bg-interactive hover:border-status-engine w-full cursor-pointer rounded border px-4 py-3 transition-colors"
         >
           {formatArchiveUrl(month_url)}
         </button>
       ))}
       <button
         onClick={() => onCancel("month")}
-        className="cursor-pointer w-full px-4 py-2 border border-interactive text-muted rounded hover:text-foreground transition-colors mt-4"
+        className="border-interactive text-muted hover:text-foreground mt-4 w-full cursor-pointer rounded border px-4 py-2 transition-colors"
       >
         Cancel
       </button>

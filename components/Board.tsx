@@ -21,9 +21,9 @@ export default function Board({ selectedGame }: BoardProps) {
 
   return (
     <div className="bg-background p-5">
-      <div className="bg-card rounded px-4 py-2 flex items-center justify-between mb-3">
+      <div className="bg-card mb-3 flex items-center justify-between rounded px-4 py-2">
         <div className="flex items-center gap-3">
-          <div className="w-6 h-6 rounded-full bg-black"></div>
+          <div className="h-6 w-6 rounded-full bg-black"></div>
           <span>{blackPlayer}</span>
         </div>
         <span>{blackPlayerRating}</span>
@@ -33,25 +33,25 @@ export default function Board({ selectedGame }: BoardProps) {
         <Chessboard />
       </div>
 
-      <div className="bg-card rounded px-4 py-2 flex items-center justify-between mb-4">
+      <div className="bg-card mb-4 flex items-center justify-between rounded px-4 py-2">
         <div className="flex items-center gap-3">
-          <div className="w-6 h-6 rounded-full bg-white"></div>
+          <div className="h-6 w-6 rounded-full bg-white"></div>
           <span>{whitePlayer}</span>
         </div>
         <span>{whitePlayerRating}</span>
       </div>
 
-      <div className="flex justify-center gap-2 bg-background rounded p-2">
-        <button className="w-16 py-2 bg-interactive text-foreground rounded hover:bg-border transition-colors flex items-center justify-center cursor-pointer">
+      <div className="bg-background flex justify-center gap-2 rounded p-2">
+        <button className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors">
           <ChevronsLeft size={20} />
         </button>
-        <button className="w-16 py-2 bg-interactive text-foreground rounded hover:bg-border transition-colors flex items-center justify-center cursor-pointer">
+        <button className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors">
           <ChevronLeft size={20} />
         </button>
-        <button className="w-16 py-2 bg-interactive text-foreground rounded hover:bg-border transition-colors flex items-center justify-center cursor-pointer">
+        <button className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors">
           <ChevronRight size={20} />
         </button>
-        <button className="w-16 py-2 bg-interactive text-foreground rounded hover:bg-border transition-colors flex items-center justify-center cursor-pointer">
+        <button className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors">
           <ChevronsRight size={20} />
         </button>
       </div>

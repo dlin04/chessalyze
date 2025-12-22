@@ -16,11 +16,11 @@ export default function UsernameStep({
 }: UsernameStepProps) {
   return (
     <>
-      <div className="text-center mb-4">
-        <h2 className="text-xl font-semibold text-foreground mb-2">
+      <div className="mb-4 text-center">
+        <h2 className="text-foreground mb-2 text-xl font-semibold">
           Get Started
         </h2>
-        <p className="text-sm text-muted">
+        <p className="text-muted text-sm">
           Enter a Chess.com username to analyze games
         </p>
       </div>
@@ -30,13 +30,13 @@ export default function UsernameStep({
           value={username}
           onChange={(e) => onUsernameChange(e.target.value)}
           placeholder="Chess.com username..."
-          className="w-full px-4 py-3 bg-card text-foreground rounded border border-interactive focus:border-border focus:outline-none transition-colors placeholder:text-muted"
+          className="bg-card text-foreground border-interactive focus:border-border placeholder:text-muted w-full rounded border px-4 py-3 transition-colors focus:outline-none"
           autoFocus
         />
         <button
           type="submit"
           disabled={!username.trim()}
-          className="cursor-pointer w-full px-4 py-3 bg-status-engine text-foreground rounded font-semibold hover:bg-status-engine/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="bg-status-engine text-foreground hover:bg-status-engine/80 flex w-full cursor-pointer items-center justify-center gap-2 rounded px-4 py-3 font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Search size={18} />
           Load Games

@@ -16,63 +16,61 @@ export default function AnalysisPanel({
       <AnalysisTabs hasSubmitted={hasSubmitted} onChangeUser={onChangeUser} />
 
       <div className="mb-6">
-        <h3 className="text-sm font-semibold text-foreground mb-2">
+        <h3 className="text-foreground mb-2 text-sm font-semibold">
           Engine Evaluation
         </h3>
-        <div className="h-10 bg-black rounded overflow-hidden flex items-center relative">
+        <div className="relative flex h-10 items-center overflow-hidden rounded bg-black">
           <div className="h-full bg-white" style={{ width: "50%" }}></div>
-          <span className="absolute inset-0 flex items-center justify-center text-foreground font-semibold mix-blend-difference">
-            0.0
-          </span>
+          <span className="text-foreground absolute inset-0 flex items-center justify-center font-semibold mix-blend-difference"></span>
         </div>
       </div>
 
       <div className="mb-6">
-        <h3 className="text-sm font-semibold text-foreground mb-2">
+        <h3 className="text-foreground mb-2 text-sm font-semibold">
           Current Move
         </h3>
-        <div className="bg-card rounded p-4 flex items-center justify-between">
+        <div className="bg-card flex items-center justify-between rounded p-4">
           <div className="flex items-center gap-3">
-            <div className="w-4 h-4 rounded-full bg-status-excellent"></div>
+            <div className="bg-status-excellent h-4 w-4 rounded-full"></div>
             <div>
-              <p className="text-sm text-foreground font-medium">1.</p>
-              <p className="text-xs text-muted">move classification</p>
+              <p className="text-foreground text-sm font-medium">1.</p>
+              <p className="text-muted text-xs">move classification</p>
             </div>
           </div>
-          <span className="text-sm text-status-excellent font-medium">
+          <span className="text-status-excellent text-sm font-medium">
             change in engine
           </span>
         </div>
       </div>
 
       <div className="mb-6">
-        <h3 className="text-sm font-semibold text-foreground mb-2">
+        <h3 className="text-foreground mb-2 text-sm font-semibold">
           Best Move
         </h3>
-        <div className="bg-card rounded p-4 flex items-center justify-between">
+        <div className="bg-card flex items-center justify-between rounded p-4">
           <div>
-            <p className="text-sm text-status-engine font-medium">best move</p>
-            <p className="text-xs text-muted">Engine&apos;s top choice</p>
+            <p className="text-status-engine text-sm font-medium">best move</p>
+            <p className="text-muted text-xs">Engine&apos;s top choice</p>
           </div>
-          <span className="text-sm text-status-engine font-medium">
+          <span className="text-status-engine text-sm font-medium">
             top choice
           </span>
         </div>
       </div>
 
       <div className="mb-6">
-        <h3 className="text-sm font-semibold text-foreground mb-2">
+        <h3 className="text-foreground mb-2 text-sm font-semibold">
           Move Accuracy
         </h3>
-        <div className="bg-card rounded p-6 flex items-center justify-around gap-8">
+        <div className="bg-card flex items-center justify-around gap-8 rounded p-6">
           <div className="text-center">
-            <p className="text-xs text-muted mb-1">
+            <p className="text-muted mb-1 text-xs">
               white player&apos;s Accuracy
             </p>
             <p className="text-4xl font-bold">X%</p>
           </div>
           <div className="text-center">
-            <p className="text-xs text-muted mb-1">
+            <p className="text-muted mb-1 text-xs">
               black player&apos;s Accuracy
             </p>
             <p className="text-4xl font-bold">Y%</p>
@@ -81,99 +79,99 @@ export default function AnalysisPanel({
       </div>
 
       <div>
-        <h3 className="text-sm font-semibold text-foreground mb-2">
+        <h3 className="text-foreground mb-2 text-sm font-semibold">
           Mistakes Overview
         </h3>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div className="bg-card rounded p-4">
-            <div className="flex items-center gap-2 mb-3 pb-2 border-b border-interactive">
-              <div className="w-3 h-3 rounded-full bg-white"></div>
-              <span className="text-xs font-semibold text-foreground">
+            <div className="border-interactive mb-3 flex items-center gap-2 border-b pb-2">
+              <div className="h-3 w-3 rounded-full bg-white"></div>
+              <span className="text-foreground text-xs font-semibold">
                 White Player
               </span>
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-status-excellent"></div>
-                  <span className="text-xs text-foreground">Excellent</span>
+                  <div className="bg-status-excellent h-2 w-2 rounded-full"></div>
+                  <span className="text-foreground text-xs">Excellent</span>
                 </div>
-                <span className="text-xs text-muted">8</span>
+                <span className="text-muted text-xs">8</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-status-good"></div>
-                  <span className="text-xs text-foreground">Good</span>
+                  <div className="bg-status-good h-2 w-2 rounded-full"></div>
+                  <span className="text-foreground text-xs">Good</span>
                 </div>
-                <span className="text-xs text-muted">12</span>
+                <span className="text-muted text-xs">12</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-status-inaccuracy"></div>
-                  <span className="text-xs text-foreground">Inaccuracy</span>
+                  <div className="bg-status-inaccuracy h-2 w-2 rounded-full"></div>
+                  <span className="text-foreground text-xs">Inaccuracy</span>
                 </div>
-                <span className="text-xs text-muted">3</span>
+                <span className="text-muted text-xs">3</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-status-mistake"></div>
-                  <span className="text-xs text-foreground">Mistake</span>
+                  <div className="bg-status-mistake h-2 w-2 rounded-full"></div>
+                  <span className="text-foreground text-xs">Mistake</span>
                 </div>
-                <span className="text-xs text-muted">2</span>
+                <span className="text-muted text-xs">2</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-status-blunder"></div>
-                  <span className="text-xs text-foreground">Blunder</span>
+                  <div className="bg-status-blunder h-2 w-2 rounded-full"></div>
+                  <span className="text-foreground text-xs">Blunder</span>
                 </div>
-                <span className="text-xs text-muted">1</span>
+                <span className="text-muted text-xs">1</span>
               </div>
             </div>
           </div>
 
           {/* Black Player */}
           <div className="bg-card rounded p-4">
-            <div className="flex items-center gap-2 mb-3 pb-2 border-b border-interactive">
-              <div className="w-3 h-3 rounded-full bg-black"></div>
-              <span className="text-xs font-semibold text-foreground">
+            <div className="border-interactive mb-3 flex items-center gap-2 border-b pb-2">
+              <div className="h-3 w-3 rounded-full bg-black"></div>
+              <span className="text-foreground text-xs font-semibold">
                 Black Player
               </span>
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-status-excellent"></div>
-                  <span className="text-xs text-foreground">Excellent</span>
+                  <div className="bg-status-excellent h-2 w-2 rounded-full"></div>
+                  <span className="text-foreground text-xs">Excellent</span>
                 </div>
-                <span className="text-xs text-muted">6</span>
+                <span className="text-muted text-xs">6</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-status-good"></div>
-                  <span className="text-xs text-foreground">Good</span>
+                  <div className="bg-status-good h-2 w-2 rounded-full"></div>
+                  <span className="text-foreground text-xs">Good</span>
                 </div>
-                <span className="text-xs text-muted">10</span>
+                <span className="text-muted text-xs">10</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-status-inaccuracy"></div>
-                  <span className="text-xs text-foreground">Inaccuracy</span>
+                  <div className="bg-status-inaccuracy h-2 w-2 rounded-full"></div>
+                  <span className="text-foreground text-xs">Inaccuracy</span>
                 </div>
-                <span className="text-xs text-muted">4</span>
+                <span className="text-muted text-xs">4</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-status-mistake"></div>
-                  <span className="text-xs text-foreground">Mistake</span>
+                  <div className="bg-status-mistake h-2 w-2 rounded-full"></div>
+                  <span className="text-foreground text-xs">Mistake</span>
                 </div>
-                <span className="text-xs text-muted">3</span>
+                <span className="text-muted text-xs">3</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-status-blunder"></div>
-                  <span className="text-xs text-foreground">Blunder</span>
+                  <div className="bg-status-blunder h-2 w-2 rounded-full"></div>
+                  <span className="text-foreground text-xs">Blunder</span>
                 </div>
-                <span className="text-xs text-muted">2</span>
+                <span className="text-muted text-xs">2</span>
               </div>
             </div>
           </div>

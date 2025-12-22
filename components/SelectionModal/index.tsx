@@ -35,9 +35,9 @@ export default function SelectionModal({
   if (!isOpen) return null;
 
   return (
-    <div className="absolute inset-0 bg-background/80 backdrop-blur-md rounded-lg flex items-center justify-center z-10">
-      <div className="max-w-2xl w-full mx-4">
-        <div className="bg-panel rounded-lg p-6 border border-border">
+    <div className="bg-background/80 absolute inset-0 z-10 flex items-center justify-center rounded-lg backdrop-blur-md">
+      <div className="mx-4 w-full max-w-2xl">
+        <div className="bg-panel border-border rounded-lg border p-6">
           {step === "username" && (
             <UsernameStep
               username={username}

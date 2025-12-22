@@ -15,10 +15,10 @@ export default function GameStep({
 }: GameStepProps) {
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold text-foreground mb-4">
+      <h2 className="text-foreground mb-4 text-xl font-semibold">
         Select a Game
       </h2>
-      <div className="space-y-2 max-h-[400px] overflow-y-auto scrollbar-hide">
+      <div className="scrollbar-hide max-h-[400px] space-y-2 overflow-y-auto">
         {games.map((game, index) => {
           const whitePlayer = game.white.username;
           const whitePlayerRating = game.white.rating;
@@ -28,8 +28,8 @@ export default function GameStep({
             game.white.result === "win"
               ? "1-0"
               : game.black.result === "win"
-              ? "0-1"
-              : "½-½";
+                ? "0-1"
+                : "½-½";
 
           const date = new Date(game.end_time * 1000).toLocaleDateString(
             "en-US",
@@ -37,14 +37,14 @@ export default function GameStep({
               month: "short",
               day: "numeric",
               year: "numeric",
-            }
+            },
           );
 
           return (
             <button
               key={index}
               onClick={() => handleGameSelect(game)}
-              className="w-full p-4 bg-background cursor-pointer hover:bg-background/80 border border-border rounded-lg text-left transition-colors"
+              className="bg-background hover:bg-background/80 border-border w-full cursor-pointer rounded-lg border p-4 text-left transition-colors"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -52,7 +52,7 @@ export default function GameStep({
                     {whitePlayer} ({whitePlayerRating}) vs {blackPlayer} (
                     {blackPlayerRating})
                   </div>
-                  <div className="text-sm text-muted">
+                  <div className="text-muted text-sm">
                     {date} • {game.time_class} • {game.time_control}
                   </div>
                 </div>
@@ -64,7 +64,7 @@ export default function GameStep({
       </div>
       <button
         onClick={() => onCancel("game")}
-        className="cursor-pointer w-full px-4 py-2 border border-interactive text-muted rounded hover:text-foreground transition-colors mt-4"
+        className="border-interactive text-muted hover:text-foreground mt-4 w-full cursor-pointer rounded border px-4 py-2 transition-colors"
       >
         Cancel
       </button>
