@@ -1,6 +1,5 @@
 "use client";
 
-import { printFEN } from "@/lib/stockfish";
 import { useState } from "react";
 import { ModalStep, Game } from "@/types";
 import Board from "@/components/Board";
@@ -40,8 +39,6 @@ export default function Home() {
     setShowModal(false);
 
     // TODO: load game and start analysis
-    console.log(game.pgn);
-    printFEN(game.pgn);
   };
 
   const handleChangeUsername = () => {
