@@ -18,6 +18,7 @@ export default function Home() {
   const [availableGames, setAvailableGames] = useState<Game[]>([]);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [analysisProgress, setAnalysisProgress] = useState<{
+    status: "parsing" | "analyzing";
     current: number;
     total: number;
   } | null>(null);
@@ -64,13 +65,14 @@ export default function Home() {
   const handleGameSelect = async (game: Game) => {
     setSelectedGame(game);
     setShowModal(false);
-    setAnalysisProgress({ current: 0, total: 0 });
+    setAnalysisProgress({ status: "parsing", current: 0, total: 0 });
 
-    const results = await analyze(game.pgn, (current, total) => {
-      setAnalysisProgress({ current, total });
+    const results = await analyze(game.pgn, (status, current, total) => {
+      setAnalysisProgress({ status, current, total });
     });
 
-    console.log("analysis complete:", results);
+    console.log(results);
+
     setAnalysisProgress(null);
   };
 
@@ -109,21 +111,27 @@ export default function Home() {
                           <div className="border-status-engine inline-block h-12 w-12 animate-spin rounded-full border-b-2"></div>
                         </div>
                         <p className="text-foreground mb-2 text-xl font-semibold">
-                          Analyzing Game...
+                          {analysisProgress.status === "parsing"
+                            ? "Parsing PGN..."
+                            : "Analyzing Game..."}
                         </p>
-                        <p className="text-muted mb-4 text-lg">
-                          Move {analysisProgress.current} of{" "}
-                          {analysisProgress.total}
-                        </p>
-                        {analysisProgress.total > 0 && (
-                          <div className="bg-border mx-auto h-2 w-64 overflow-hidden rounded-full">
-                            <div
-                              className="bg-status-engine h-full transition-all duration-300"
-                              style={{
-                                width: `${(analysisProgress.current / analysisProgress.total) * 100}%`,
-                              }}
-                            />
-                          </div>
+                        {analysisProgress.status === "analyzing" && (
+                          <>
+                            <p className="text-muted mb-4 text-lg">
+                              Move {analysisProgress.current} of{" "}
+                              {analysisProgress.total}
+                            </p>
+                            {analysisProgress.total > 0 && (
+                              <div className="bg-border mx-auto h-2 w-64 overflow-hidden rounded-full">
+                                <div
+                                  className="bg-status-engine h-full transition-all duration-300"
+                                  style={{
+                                    width: `${(analysisProgress.current / analysisProgress.total) * 100}%`,
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </>
                         )}
                       </div>
                     </div>

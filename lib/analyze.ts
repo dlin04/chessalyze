@@ -10,7 +10,11 @@ export interface PositionEvaluation {
 
 export async function analyze(
   pgn: string,
-  onProgress?: (current: number, total: number) => void,
+  onProgress?: (
+    status: "parsing" | "analyzing",
+    current: number,
+    total: number,
+  ) => void,
 ): Promise<PositionEvaluation[]> {
   const chess = new Chess();
   chess.loadPgn(pgn);
@@ -27,7 +31,7 @@ export async function analyze(
     evaluation: startEval,
   });
 
-  onProgress?.(0, moves.length);
+  onProgress?.("analyzing", 0, moves.length);
   for (let i = 0; i < moves.length; i++) {
     chess.move(moves[i]);
 
@@ -39,7 +43,7 @@ export async function analyze(
       evaluation,
     });
 
-    onProgress?.(i + 1, moves.length);
+    onProgress?.("analyzing", i + 1, moves.length);
   }
 
   return positions;
