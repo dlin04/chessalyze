@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ModalStep, Game } from "@/types";
 import Board from "@/components/Board";
 import SelectionModal from "@/components/SelectionModal";
 import AnalysisPanel from "@/components/AnalysisPanel";
 import { getPlayedMonths, getMonthGames } from "@/lib/chessComApi";
+import { getStockfish } from "@/lib/stockfish";
+import { analyze } from "@/lib/analyze";
 
 export default function Home() {
   const [username, setUsername] = useState("");
@@ -15,6 +17,16 @@ export default function Home() {
   const [availableMonths, setAvailableMonths] = useState<string[]>([]);
   const [availableGames, setAvailableGames] = useState<Game[]>([]);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const [analysisProgress, setAnalysisProgress] = useState<{
+    current: number;
+    total: number;
+  } | null>(null);
+
+  useEffect(() => {
+    return () => {
+      getStockfish().terminate();
+    };
+  }, []);
 
   const handleUsernameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,13 +46,6 @@ export default function Home() {
     setModalStep("game");
   };
 
-  const handleGameSelect = async (game: Game) => {
-    setSelectedGame(game);
-    setShowModal(false);
-
-    // TODO: load game and start analysis
-  };
-
   const handleChangeUsername = () => {
     setSelectedGame(null);
     setShowModal(true);
@@ -54,6 +59,19 @@ export default function Home() {
       setModalStep("month");
     }
     setShowModal(true);
+  };
+
+  const handleGameSelect = async (game: Game) => {
+    setSelectedGame(game);
+    setShowModal(false);
+    setAnalysisProgress({ current: 0, total: 0 });
+
+    const results = await analyze(game.pgn, (current, total) => {
+      setAnalysisProgress({ current, total });
+    });
+
+    console.log("analysis complete:", results);
+    setAnalysisProgress(null);
   };
 
   return (
@@ -83,10 +101,38 @@ export default function Home() {
                   onCancel={handleCancelModal}
                 />
               ) : (
-                <AnalysisPanel
-                  hasSubmitted={hasSubmitted}
-                  onChangeUser={handleChangeUsername}
-                />
+                <>
+                  {analysisProgress && (
+                    <div className="bg-background/90 absolute inset-0 z-20 flex items-center justify-center rounded-lg backdrop-blur-sm">
+                      <div className="text-center">
+                        <div className="mb-4">
+                          <div className="border-status-engine inline-block h-12 w-12 animate-spin rounded-full border-b-2"></div>
+                        </div>
+                        <p className="text-foreground mb-2 text-xl font-semibold">
+                          Analyzing Game...
+                        </p>
+                        <p className="text-muted mb-4 text-lg">
+                          Move {analysisProgress.current} of{" "}
+                          {analysisProgress.total}
+                        </p>
+                        {analysisProgress.total > 0 && (
+                          <div className="bg-border mx-auto h-2 w-64 overflow-hidden rounded-full">
+                            <div
+                              className="bg-status-engine h-full transition-all duration-300"
+                              style={{
+                                width: `${(analysisProgress.current / analysisProgress.total) * 100}%`,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  <AnalysisPanel
+                    hasSubmitted={hasSubmitted}
+                    onChangeUser={handleChangeUsername}
+                  />
+                </>
               )}
             </div>
           </div>
