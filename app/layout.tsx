@@ -11,6 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Chessalyze",
   description: "Chess.com Game Review simulator. Free!",
+  icons: "favicon.png",
 };
 
 export default function RootLayout({
