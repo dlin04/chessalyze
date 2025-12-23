@@ -8,16 +8,27 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import { Game } from "@/types";
+import { PositionEvaluation } from "@/lib/analyze";
 
 interface BoardProps {
   selectedGame: Game | null;
+  analysisResult: PositionEvaluation[];
+  currentMoveIndex: number;
+  onMoveIndexChange: (index: number) => void;
 }
 
-export default function Board({ selectedGame }: BoardProps) {
+export default function Board({
+  selectedGame,
+  analysisResult,
+  currentMoveIndex,
+  onMoveIndexChange,
+}: BoardProps) {
   const whitePlayer = selectedGame?.white.username || "White Player";
   const whitePlayerRating = selectedGame?.white.rating || "Rating";
   const blackPlayer = selectedGame?.black.username || "Black Player";
   const blackPlayerRating = selectedGame?.black.rating || "Rating";
+
+  const defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
   return (
     <div className="bg-background p-5">
@@ -30,7 +41,14 @@ export default function Board({ selectedGame }: BoardProps) {
       </div>
 
       <div className="mb-3">
-        <Chessboard />
+        <Chessboard
+          options={{
+            position:
+              analysisResult.length > 0 && analysisResult[currentMoveIndex]?.fen
+                ? analysisResult[currentMoveIndex].fen
+                : defaultFen,
+          }}
+        />
       </div>
 
       <div className="bg-card mb-4 flex items-center justify-between rounded px-4 py-2">
@@ -42,16 +60,40 @@ export default function Board({ selectedGame }: BoardProps) {
       </div>
 
       <div className="bg-background flex justify-center gap-2 rounded p-2">
-        <button className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors">
+        <button
+          onClick={() => onMoveIndexChange(0)}
+          disabled={currentMoveIndex === 0}
+          className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors"
+        >
           <ChevronsLeft size={20} />
         </button>
-        <button className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors">
+        <button
+          onClick={() => onMoveIndexChange(Math.max(0, currentMoveIndex - 1))}
+          disabled={currentMoveIndex === 0}
+          className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors"
+        >
           <ChevronLeft size={20} />
         </button>
-        <button className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors">
+        <button
+          onClick={() =>
+            onMoveIndexChange(
+              Math.min((analysisResult?.length ?? 1) - 1, currentMoveIndex + 1),
+            )
+          }
+          disabled={
+            !analysisResult || currentMoveIndex === analysisResult.length - 1
+          }
+          className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors"
+        >
           <ChevronRight size={20} />
         </button>
-        <button className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors">
+        <button
+          onClick={() => onMoveIndexChange((analysisResult?.length ?? 1) - 1)}
+          disabled={
+            !analysisResult || currentMoveIndex === analysisResult.length - 1
+          }
+          className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors"
+        >
           <ChevronsRight size={20} />
         </button>
       </div>

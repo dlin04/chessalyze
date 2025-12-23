@@ -7,7 +7,7 @@ import SelectionModal from "@/components/SelectionModal";
 import AnalysisPanel from "@/components/AnalysisPanel";
 import { getPlayedMonths, getMonthGames } from "@/lib/chessComApi";
 import { getStockfish } from "@/lib/stockfish";
-import { analyze } from "@/lib/analyze";
+import { analyze, PositionEvaluation } from "@/lib/analyze";
 
 export default function Home() {
   const [username, setUsername] = useState("");
@@ -17,6 +17,10 @@ export default function Home() {
   const [availableMonths, setAvailableMonths] = useState<string[]>([]);
   const [availableGames, setAvailableGames] = useState<Game[]>([]);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<PositionEvaluation[]>(
+    [],
+  );
+  const [currentMoveIndex, setCurrentMoveIndex] = useState(0);
   const [analysisProgress, setAnalysisProgress] = useState<{
     status: "parsing" | "analyzing";
     current: number;
@@ -67,12 +71,14 @@ export default function Home() {
     setShowModal(false);
     setAnalysisProgress({ status: "parsing", current: 0, total: 0 });
 
-    const results = await analyze(game.pgn, (status, current, total) => {
+    const result = await analyze(game.pgn, (status, current, total) => {
       setAnalysisProgress({ status, current, total });
     });
 
-    console.log(results);
+    console.log(result);
 
+    setAnalysisResult(result);
+    setCurrentMoveIndex(0);
     setAnalysisProgress(null);
   };
 
@@ -85,7 +91,12 @@ export default function Home() {
       <main className="p-8">
         <div className="bg-panel mx-auto max-w-[1300px] rounded-lg p-5">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[600px_1fr]">
-            <Board selectedGame={selectedGame} />
+            <Board
+              selectedGame={selectedGame}
+              analysisResult={analysisResult}
+              currentMoveIndex={currentMoveIndex}
+              onMoveIndexChange={(index) => setCurrentMoveIndex(index)}
+            />
 
             <div className="bg-background relative min-h-[800px] rounded-lg p-5">
               {!selectedGame ? (
