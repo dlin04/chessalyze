@@ -53,8 +53,8 @@ export default function Home() {
 
   const handleChangeUsername = () => {
     setSelectedGame(null);
-    setAnalysisResult([]); // Reset analysisResult to empty
-    setCurrentMoveIndex(0); // Reset move index to 0
+    setAnalysisResult([]);
+    setCurrentMoveIndex(0);
     setShowModal(true);
     setModalStep("username");
   };
