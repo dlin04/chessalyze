@@ -53,6 +53,8 @@ export default function Home() {
 
   const handleChangeUsername = () => {
     setSelectedGame(null);
+    setAnalysisResult([]); // Reset analysisResult to empty
+    setCurrentMoveIndex(0); // Reset move index to 0
     setShowModal(true);
     setModalStep("username");
   };
@@ -90,7 +92,7 @@ export default function Home() {
 
       <main className="p-8">
         <div className="bg-panel mx-auto max-w-[1300px] rounded-lg p-5">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[600px_1fr]">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(300px,600px)_1fr]">
             <Board
               selectedGame={selectedGame}
               analysisResult={analysisResult}
@@ -129,7 +131,7 @@ export default function Home() {
                         {analysisProgress.status === "analyzing" && (
                           <>
                             <p className="text-muted mb-4 text-lg">
-                              Move {analysisProgress.current} of{" "}
+                              Position {analysisProgress.current} of{" "}
                               {analysisProgress.total}
                             </p>
                             {analysisProgress.total > 0 && (
@@ -147,10 +149,7 @@ export default function Home() {
                       </div>
                     </div>
                   )}
-                  <AnalysisPanel
-                    hasSubmitted={hasSubmitted}
-                    onChangeUser={handleChangeUsername}
-                  />
+                  <AnalysisPanel onChangeUser={handleChangeUsername} />
                 </>
               )}
             </div>

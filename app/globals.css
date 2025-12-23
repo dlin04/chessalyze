@@ -12,11 +12,6 @@
   --color-muted: #8a8f9e;
   --color-board-light: #f0d9b5;
   --color-board-dark: #b58863;
-  --color-status-excellent: #6fa86f;
-  --color-status-good: #8abd63;
-  --color-status-inaccuracy: #f0a545;
-  --color-status-mistake: #e67e50;
-  --color-status-blunder: #d14343;
   --color-status-engine: #4da6ff;
 }
 
@@ -26,8 +21,10 @@
   }
 
   body {
-    @apply font-sans bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
   }
 }
 

@@ -1,19 +1,22 @@
 "use client";
 
+import Image from "next/image";
 import AnalysisTabs from "./AnalysisTabs";
+import Best from "@/public/moveClassifications/best.png";
+import Great from "@/public/moveClassifications/great.png";
+import Good from "@/public/moveClassifications/good.png";
+import Inaccuracy from "@/public/moveClassifications/inaccuracy.png";
+import Mistake from "@/public/moveClassifications/mistake.png";
+import Blunder from "@/public/moveClassifications/blunder.png";
 
 interface AnalysisPanelProps {
-  hasSubmitted: boolean;
   onChangeUser: () => void;
 }
 
-export default function AnalysisPanel({
-  hasSubmitted,
-  onChangeUser,
-}: AnalysisPanelProps) {
+export default function AnalysisPanel({ onChangeUser }: AnalysisPanelProps) {
   return (
     <>
-      <AnalysisTabs hasSubmitted={hasSubmitted} onChangeUser={onChangeUser} />
+      <AnalysisTabs onChangeUser={onChangeUser} />
 
       <div className="mb-6">
         <h3 className="text-foreground mb-2 text-sm font-semibold">
@@ -31,15 +34,12 @@ export default function AnalysisPanel({
         </h3>
         <div className="bg-card flex items-center justify-between rounded p-4">
           <div className="flex items-center gap-3">
-            <div className="bg-status-excellent h-4 w-4 rounded-full"></div>
+            <div>icon</div>
             <div>
               <p className="text-foreground text-sm font-medium">1.</p>
-              <p className="text-muted text-xs">move classification</p>
             </div>
           </div>
-          <span className="text-status-excellent text-sm font-medium">
-            change in engine
-          </span>
+          <span className="text-sm font-medium">change in engine</span>
         </div>
       </div>
 
@@ -47,14 +47,8 @@ export default function AnalysisPanel({
         <h3 className="text-foreground mb-2 text-sm font-semibold">
           Best Move
         </h3>
-        <div className="bg-card flex items-center justify-between rounded p-4">
-          <div>
-            <p className="text-status-engine text-sm font-medium">best move</p>
-            <p className="text-muted text-xs">Engine&apos;s top choice</p>
-          </div>
-          <span className="text-status-engine text-sm font-medium">
-            top choice
-          </span>
+        <div className="bg-card flex items-center gap-2 rounded p-4">
+          <Image src={Best} alt="Best move icon" width={24} height={24} /> best
         </div>
       </div>
 
@@ -85,7 +79,7 @@ export default function AnalysisPanel({
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div className="bg-card rounded p-4">
             <div className="border-interactive mb-3 flex items-center gap-2 border-b pb-2">
-              <div className="h-3 w-3 rounded-full bg-white"></div>
+              <div className="h-5 w-5 rounded-full bg-white"></div>
               <span className="text-foreground text-xs font-semibold">
                 White Player
               </span>
@@ -93,35 +87,72 @@ export default function AnalysisPanel({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="bg-status-excellent h-2 w-2 rounded-full"></div>
-                  <span className="text-foreground text-xs">Excellent</span>
+                  <Image
+                    src={Best}
+                    alt="Best move icon"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-foreground text-xs">Best</span>
                 </div>
                 <span className="text-muted text-xs">8</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="bg-status-good h-2 w-2 rounded-full"></div>
-                  <span className="text-foreground text-xs">Good</span>
+                  <Image
+                    src={Great}
+                    alt="Great move icon"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-foreground text-xs">Great</span>
                 </div>
                 <span className="text-muted text-xs">12</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="bg-status-inaccuracy h-2 w-2 rounded-full"></div>
-                  <span className="text-foreground text-xs">Inaccuracy</span>
+                  <Image
+                    src={Good}
+                    alt="Good move icon"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-foreground text-xs">Good</span>
                 </div>
                 <span className="text-muted text-xs">3</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="bg-status-mistake h-2 w-2 rounded-full"></div>
-                  <span className="text-foreground text-xs">Mistake</span>
+                  <Image
+                    src={Inaccuracy}
+                    alt="Inaccurate move icon"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-foreground text-xs">Inaccuracy</span>
                 </div>
                 <span className="text-muted text-xs">2</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="bg-status-blunder h-2 w-2 rounded-full"></div>
+                  <Image
+                    src={Mistake}
+                    alt="Mistake icon"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-foreground text-xs">Mistake</span>
+                </div>
+                <span className="text-muted text-xs">1</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={Blunder}
+                    alt="Blunder icon"
+                    width={20}
+                    height={20}
+                  />
                   <span className="text-foreground text-xs">Blunder</span>
                 </div>
                 <span className="text-muted text-xs">1</span>
@@ -129,10 +160,9 @@ export default function AnalysisPanel({
             </div>
           </div>
 
-          {/* Black Player */}
           <div className="bg-card rounded p-4">
             <div className="border-interactive mb-3 flex items-center gap-2 border-b pb-2">
-              <div className="h-3 w-3 rounded-full bg-black"></div>
+              <div className="h-5 w-5 rounded-full bg-black"></div>
               <span className="text-foreground text-xs font-semibold">
                 Black Player
               </span>
@@ -140,38 +170,75 @@ export default function AnalysisPanel({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="bg-status-excellent h-2 w-2 rounded-full"></div>
-                  <span className="text-foreground text-xs">Excellent</span>
+                  <Image
+                    src={Best}
+                    alt="Best move icon"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-foreground text-xs">Best</span>
                 </div>
-                <span className="text-muted text-xs">6</span>
+                <span className="text-muted text-xs">8</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="bg-status-good h-2 w-2 rounded-full"></div>
+                  <Image
+                    src={Great}
+                    alt="Great move icon"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-foreground text-xs">Great</span>
+                </div>
+                <span className="text-muted text-xs">12</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={Good}
+                    alt="Good move icon"
+                    width={20}
+                    height={20}
+                  />
                   <span className="text-foreground text-xs">Good</span>
-                </div>
-                <span className="text-muted text-xs">10</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="bg-status-inaccuracy h-2 w-2 rounded-full"></div>
-                  <span className="text-foreground text-xs">Inaccuracy</span>
-                </div>
-                <span className="text-muted text-xs">4</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="bg-status-mistake h-2 w-2 rounded-full"></div>
-                  <span className="text-foreground text-xs">Mistake</span>
                 </div>
                 <span className="text-muted text-xs">3</span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="bg-status-blunder h-2 w-2 rounded-full"></div>
-                  <span className="text-foreground text-xs">Blunder</span>
+                  <Image
+                    src={Inaccuracy}
+                    alt="Inaccurate move icon"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-foreground text-xs">Inaccuracy</span>
                 </div>
                 <span className="text-muted text-xs">2</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={Mistake}
+                    alt="Mistake icon"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-foreground text-xs">Mistake</span>
+                </div>
+                <span className="text-muted text-xs">1</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={Blunder}
+                    alt="Blunder icon"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-foreground text-xs">Blunder</span>
+                </div>
+                <span className="text-muted text-xs">1</span>
               </div>
             </div>
           </div>

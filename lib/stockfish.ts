@@ -1,7 +1,6 @@
 export interface StockfishEvaluation {
   type: "cp" | "mate";
   value: number;
-  depth: number;
   bestMove: string;
 }
 
@@ -55,7 +54,7 @@ class StockfishEngine {
 
     return new Promise((resolve) => {
       let bestMove = "";
-      let evaluation: StockfishEvaluation | null = null;
+      let evaluation: Omit<StockfishEvaluation, "bestMove"> | null = null;
 
       const handler = (message: string) => {
         if (message.startsWith("info") && message.includes("score")) {
@@ -68,8 +67,6 @@ class StockfishEngine {
               evaluation = {
                 type: "cp",
                 value: parseInt(cpMatch[1]),
-                depth: currentDepth,
-                bestMove: "",
               };
             }
 
@@ -78,8 +75,6 @@ class StockfishEngine {
               evaluation = {
                 type: "mate",
                 value: parseInt(mateMatch[1]),
-                depth: currentDepth,
-                bestMove: "",
               };
             }
           }
@@ -92,13 +87,11 @@ class StockfishEngine {
           }
 
           if (evaluation) {
-            evaluation.bestMove = bestMove;
-            resolve(evaluation);
+            resolve({ ...evaluation, bestMove });
           } else {
             resolve({
               type: "cp",
               value: 0,
-              depth: 0,
               bestMove: bestMove,
             });
           }
