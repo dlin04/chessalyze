@@ -11,6 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Chessalyze",
   description: "Chess.com Game Review simulator. Free!",
+  icons: "favicon.png",
 };
 
 export default function RootLayout({
@@ -21,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} font-sans antialiased bg-background text-foreground`}
+        className={`${inter.variable} bg-background text-foreground font-sans antialiased`}
       >
         {children}
         <Analytics />

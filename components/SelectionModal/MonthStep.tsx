@@ -3,7 +3,7 @@
 interface MonthStepProps {
   months: string[];
   handleMonthSelect: (month_url: string) => void;
-  onCancel: () => void;
+  onCancel: (current_step: string) => void;
 }
 
 export default function MonthStep({
@@ -26,14 +26,14 @@ export default function MonthStep({
         <button
           key={index}
           onClick={() => handleMonthSelect(month_url)}
-          className="cursor-pointer w-full px-4 py-3 bg-card text-foreground rounded border border-interactive hover:bg-interactive hover:border-status-engine transition-colors"
+          className="bg-card text-foreground border-interactive hover:bg-interactive hover:border-status-engine w-full cursor-pointer rounded border px-4 py-3 transition-colors"
         >
           {formatArchiveUrl(month_url)}
         </button>
       ))}
       <button
-        onClick={onCancel}
-        className="w-full px-4 py-2 border border-interactive text-muted rounded hover:text-foreground transition-colors mt-4"
+        onClick={() => onCancel("month")}
+        className="border-interactive text-muted hover:text-foreground mt-4 w-full cursor-pointer rounded border px-4 py-2 transition-colors"
       >
         Cancel
       </button>
