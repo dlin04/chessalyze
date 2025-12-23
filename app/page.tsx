@@ -17,10 +17,10 @@ export default function Home() {
   const [availableMonths, setAvailableMonths] = useState<string[]>([]);
   const [availableGames, setAvailableGames] = useState<Game[]>([]);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const [currentMoveIndex, setCurrentMoveIndex] = useState(0);
   const [analysisResult, setAnalysisResult] = useState<PositionEvaluation[]>(
     [],
   );
-  const [currentMoveIndex, setCurrentMoveIndex] = useState(0);
   const [analysisProgress, setAnalysisProgress] = useState<{
     status: "parsing" | "analyzing";
     current: number;

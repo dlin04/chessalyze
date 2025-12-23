@@ -22,6 +22,9 @@ export default function MonthStep({
 
   return (
     <div className="space-y-2">
+      <h2 className="text-foreground mb-4 text-xl font-semibold">
+        Choose From Month
+      </h2>
       {months.map((month_url, index) => (
         <button
           key={index}

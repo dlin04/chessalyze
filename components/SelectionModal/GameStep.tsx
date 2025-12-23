@@ -15,8 +15,8 @@ export default function GameStep({
 }: GameStepProps) {
   return (
     <div className="space-y-4">
-      <h2 className="text-foreground mb-4 text-xl font-semibold">
-        Select a Game
+      <h2 className="text-foreground mb-4 text-center text-xl font-semibold">
+        Select Game
       </h2>
       <div className="scrollbar-hide max-h-[400px] space-y-2 overflow-y-auto">
         {games.map((game, index) => {

@@ -1,3 +1,4 @@
+export type AnalysisTab = "analysis" | "moves";
 export type ModalStep = "username" | "month" | "game";
 
 export interface Player {
