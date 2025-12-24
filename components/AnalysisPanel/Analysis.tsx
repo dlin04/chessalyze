@@ -45,26 +45,6 @@ export default function AnalysisPanel() {
         </div>
       </div>
 
-      <div className="mb-6">
-        <h3 className="text-foreground mb-2 text-sm font-semibold">
-          Move Accuracy
-        </h3>
-        <div className="bg-card flex items-center justify-around gap-8 rounded p-6">
-          <div className="text-center">
-            <p className="text-muted mb-1 text-xs">
-              white player&apos;s Accuracy
-            </p>
-            <p className="text-4xl font-bold">X%</p>
-          </div>
-          <div className="text-center">
-            <p className="text-muted mb-1 text-xs">
-              black player&apos;s Accuracy
-            </p>
-            <p className="text-4xl font-bold">Y%</p>
-          </div>
-        </div>
-      </div>
-
       <div>
         <h3 className="text-foreground mb-2 text-sm font-semibold">
           Mistakes Overview
