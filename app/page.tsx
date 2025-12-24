@@ -79,7 +79,7 @@ export default function Home() {
 
     console.log(result);
 
-    setAnalysisResult(result);
+    setAnalysisResult(result.positions);
     setCurrentMoveIndex(0);
     setAnalysisProgress(null);
   };
