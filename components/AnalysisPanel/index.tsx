@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { AnalysisTab } from "@/types";
+import { AnalysisTab, Game, PlayerMoveStats } from "@/types";
 import { UserRoundSearch, Move, BookOpenCheck } from "lucide-react";
 import Analysis from "./Analysis";
 import Moves from "./Moves";
 
 interface AnalysisPanelProps {
+  selectedGame: Game;
+  whitePlayerStats: PlayerMoveStats | null;
+  blackPlayerStats: PlayerMoveStats | null;
   onChangeUser: () => void;
 }
 
@@ -50,7 +53,12 @@ function AnalysisTabs({
   );
 }
 
-export default function AnalysisPanel({ onChangeUser }: AnalysisPanelProps) {
+export default function AnalysisPanel({
+  selectedGame,
+  whitePlayerStats,
+  blackPlayerStats,
+  onChangeUser,
+}: AnalysisPanelProps) {
   const [activeTab, setActiveTab] = useState<AnalysisTab>("analysis");
 
   return (
@@ -60,7 +68,13 @@ export default function AnalysisPanel({ onChangeUser }: AnalysisPanelProps) {
         setActiveTab={setActiveTab}
         onChangeUser={onChangeUser}
       />
-      {activeTab === "analysis" && <Analysis />}
+      {activeTab === "analysis" && (
+        <Analysis
+          selectedGame={selectedGame}
+          whitePlayerStats={whitePlayerStats}
+          blackPlayerStats={blackPlayerStats}
+        />
+      )}
       {activeTab === "moves" && <Moves />}
     </>
   );

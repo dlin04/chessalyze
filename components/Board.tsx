@@ -12,14 +12,14 @@ import { PositionEvaluation } from "@/lib/analyze";
 
 interface BoardProps {
   selectedGame: Game | null;
-  analysisResult: PositionEvaluation[];
+  analyzedPositions: PositionEvaluation[];
   currentMoveIndex: number;
   onMoveIndexChange: (index: number) => void;
 }
 
 export default function Board({
   selectedGame,
-  analysisResult,
+  analyzedPositions,
   currentMoveIndex,
   onMoveIndexChange,
 }: BoardProps) {
@@ -44,8 +44,9 @@ export default function Board({
         <Chessboard
           options={{
             position:
-              analysisResult.length > 0 && analysisResult[currentMoveIndex]?.fen
-                ? analysisResult[currentMoveIndex].fen
+              analyzedPositions.length > 0 &&
+              analyzedPositions[currentMoveIndex]?.fen
+                ? analyzedPositions[currentMoveIndex].fen
                 : defaultFen,
           }}
         />
@@ -77,20 +78,27 @@ export default function Board({
         <button
           onClick={() =>
             onMoveIndexChange(
-              Math.min((analysisResult?.length ?? 1) - 1, currentMoveIndex + 1),
+              Math.min(
+                (analyzedPositions?.length ?? 1) - 1,
+                currentMoveIndex + 1,
+              ),
             )
           }
           disabled={
-            !analysisResult || currentMoveIndex === analysisResult.length - 1
+            !analyzedPositions ||
+            currentMoveIndex === analyzedPositions.length - 1
           }
           className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors"
         >
           <ChevronRight size={24} />
         </button>
         <button
-          onClick={() => onMoveIndexChange((analysisResult?.length ?? 1) - 1)}
+          onClick={() =>
+            onMoveIndexChange((analyzedPositions?.length ?? 1) - 1)
+          }
           disabled={
-            !analysisResult || currentMoveIndex === analysisResult.length - 1
+            !analyzedPositions ||
+            currentMoveIndex === analyzedPositions.length - 1
           }
           className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors"
         >

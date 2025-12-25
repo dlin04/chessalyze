@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Game, PlayerMoveStats } from "@/types";
 import Best from "@/public/moveClassifications/best.png";
 import Great from "@/public/moveClassifications/great.png";
 import Good from "@/public/moveClassifications/good.png";
@@ -8,7 +9,17 @@ import Inaccuracy from "@/public/moveClassifications/inaccuracy.png";
 import Mistake from "@/public/moveClassifications/mistake.png";
 import Blunder from "@/public/moveClassifications/blunder.png";
 
-export default function AnalysisPanel() {
+interface AnalysisProps {
+  selectedGame: Game;
+  whitePlayerStats: PlayerMoveStats | null;
+  blackPlayerStats: PlayerMoveStats | null;
+}
+
+export default function Analysis({
+  selectedGame,
+  whitePlayerStats,
+  blackPlayerStats,
+}: AnalysisProps) {
   return (
     <>
       <div className="mb-6">
@@ -27,7 +38,6 @@ export default function AnalysisPanel() {
         </h3>
         <div className="bg-card flex items-center justify-between rounded p-4">
           <div className="flex items-center gap-3">
-            <div>icon</div>
             <div>
               <p className="text-foreground text-sm font-medium">1.</p>
             </div>
@@ -54,7 +64,7 @@ export default function AnalysisPanel() {
             <div className="border-interactive mb-3 flex items-center gap-2 border-b pb-2">
               <div className="h-5 w-5 rounded-full bg-white"></div>
               <span className="text-foreground text-xs font-semibold">
-                White Player
+                {selectedGame.white.username}
               </span>
             </div>
             <div className="space-y-2">
@@ -68,7 +78,9 @@ export default function AnalysisPanel() {
                   />
                   <span className="text-foreground text-xs">Best</span>
                 </div>
-                <span className="text-muted text-xs">8</span>
+                <span className="text-muted text-xs">
+                  {whitePlayerStats?.best}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -80,7 +92,9 @@ export default function AnalysisPanel() {
                   />
                   <span className="text-foreground text-xs">Great</span>
                 </div>
-                <span className="text-muted text-xs">12</span>
+                <span className="text-muted text-xs">
+                  {whitePlayerStats?.great}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -92,7 +106,9 @@ export default function AnalysisPanel() {
                   />
                   <span className="text-foreground text-xs">Good</span>
                 </div>
-                <span className="text-muted text-xs">3</span>
+                <span className="text-muted text-xs">
+                  {whitePlayerStats?.good}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -104,7 +120,9 @@ export default function AnalysisPanel() {
                   />
                   <span className="text-foreground text-xs">Inaccuracy</span>
                 </div>
-                <span className="text-muted text-xs">2</span>
+                <span className="text-muted text-xs">
+                  {whitePlayerStats?.inaccuracy}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -116,7 +134,9 @@ export default function AnalysisPanel() {
                   />
                   <span className="text-foreground text-xs">Mistake</span>
                 </div>
-                <span className="text-muted text-xs">1</span>
+                <span className="text-muted text-xs">
+                  {whitePlayerStats?.mistake}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -128,7 +148,9 @@ export default function AnalysisPanel() {
                   />
                   <span className="text-foreground text-xs">Blunder</span>
                 </div>
-                <span className="text-muted text-xs">1</span>
+                <span className="text-muted text-xs">
+                  {whitePlayerStats?.blunder}
+                </span>
               </div>
             </div>
           </div>
@@ -137,7 +159,7 @@ export default function AnalysisPanel() {
             <div className="border-interactive mb-3 flex items-center gap-2 border-b pb-2">
               <div className="h-5 w-5 rounded-full bg-black"></div>
               <span className="text-foreground text-xs font-semibold">
-                Black Player
+                {selectedGame.black.username}
               </span>
             </div>
             <div className="space-y-2">
@@ -151,7 +173,9 @@ export default function AnalysisPanel() {
                   />
                   <span className="text-foreground text-xs">Best</span>
                 </div>
-                <span className="text-muted text-xs">8</span>
+                <span className="text-muted text-xs">
+                  {blackPlayerStats?.best}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -163,7 +187,9 @@ export default function AnalysisPanel() {
                   />
                   <span className="text-foreground text-xs">Great</span>
                 </div>
-                <span className="text-muted text-xs">12</span>
+                <span className="text-muted text-xs">
+                  {blackPlayerStats?.great}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -175,7 +201,9 @@ export default function AnalysisPanel() {
                   />
                   <span className="text-foreground text-xs">Good</span>
                 </div>
-                <span className="text-muted text-xs">3</span>
+                <span className="text-muted text-xs">
+                  {blackPlayerStats?.good}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -187,7 +215,9 @@ export default function AnalysisPanel() {
                   />
                   <span className="text-foreground text-xs">Inaccuracy</span>
                 </div>
-                <span className="text-muted text-xs">2</span>
+                <span className="text-muted text-xs">
+                  {blackPlayerStats?.inaccuracy}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -199,7 +229,9 @@ export default function AnalysisPanel() {
                   />
                   <span className="text-foreground text-xs">Mistake</span>
                 </div>
-                <span className="text-muted text-xs">1</span>
+                <span className="text-muted text-xs">
+                  {blackPlayerStats?.mistake}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -211,7 +243,9 @@ export default function AnalysisPanel() {
                   />
                   <span className="text-foreground text-xs">Blunder</span>
                 </div>
-                <span className="text-muted text-xs">1</span>
+                <span className="text-muted text-xs">
+                  {blackPlayerStats?.blunder}
+                </span>
               </div>
             </div>
           </div>

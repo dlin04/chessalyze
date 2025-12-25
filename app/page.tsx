@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ModalStep, Game } from "@/types";
+import { ModalStep, Game, PlayerMoveStats } from "@/types";
 import Board from "@/components/Board";
 import SelectionModal from "@/components/SelectionModal";
 import AnalysisPanel from "@/components/AnalysisPanel";
@@ -18,14 +18,18 @@ export default function Home() {
   const [availableGames, setAvailableGames] = useState<Game[]>([]);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [currentMoveIndex, setCurrentMoveIndex] = useState(0);
-  const [analysisResult, setAnalysisResult] = useState<PositionEvaluation[]>(
-    [],
-  );
   const [analysisProgress, setAnalysisProgress] = useState<{
     status: "parsing" | "analyzing";
     current: number;
     total: number;
   } | null>(null);
+  const [analyedPositions, setAnalyzedPositions] = useState<
+    PositionEvaluation[]
+  >([]);
+  const [whitePlayerStats, setWhitePlayerStats] =
+    useState<PlayerMoveStats | null>(null);
+  const [blackPlayerStats, setBlackPlayerStats] =
+    useState<PlayerMoveStats | null>(null);
 
   useEffect(() => {
     return () => {
@@ -53,7 +57,7 @@ export default function Home() {
 
   const handleChangeUsername = () => {
     setSelectedGame(null);
-    setAnalysisResult([]);
+    setAnalyzedPositions([]);
     setCurrentMoveIndex(0);
     setShowModal(true);
     setModalStep("username");
@@ -79,7 +83,9 @@ export default function Home() {
 
     console.log(result);
 
-    setAnalysisResult(result.positions);
+    setAnalyzedPositions(result.positions);
+    setWhitePlayerStats(result.whitePlayerStats);
+    setBlackPlayerStats(result.blackPlayerStats);
     setCurrentMoveIndex(0);
     setAnalysisProgress(null);
   };
@@ -95,7 +101,7 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(300px,600px)_1fr]">
             <Board
               selectedGame={selectedGame}
-              analysisResult={analysisResult}
+              analyzedPositions={analyedPositions}
               currentMoveIndex={currentMoveIndex}
               onMoveIndexChange={(index) => setCurrentMoveIndex(index)}
             />
@@ -149,7 +155,12 @@ export default function Home() {
                       </div>
                     </div>
                   )}
-                  <AnalysisPanel onChangeUser={handleChangeUsername} />
+                  <AnalysisPanel
+                    selectedGame={selectedGame}
+                    whitePlayerStats={whitePlayerStats}
+                    blackPlayerStats={blackPlayerStats}
+                    onChangeUser={handleChangeUsername}
+                  />
                 </>
               )}
             </div>
