@@ -1,13 +1,10 @@
 import { Chess } from "chess.js";
-import { getStockfish, StockfishEvaluation } from "./stockfish";
-import { PlayerMoveStats, MoveClassification } from "@/types";
-
-export interface PositionEvaluation {
-  moveNumber: number;
-  move: string | null;
-  fen: string;
-  evaluation: StockfishEvaluation;
-}
+import { getStockfish } from "./stockfish";
+import {
+  PlayerMoveStats,
+  PositionEvaluation,
+  MoveClassification,
+} from "@/types";
 
 const whitePlayerStats: PlayerMoveStats = {
   best: 0,
@@ -60,6 +57,7 @@ export async function analyze(
     move: null,
     fen: chess.fen(),
     evaluation: startEval,
+    bestMoveSan: "e4",
   });
 
   let prevEval = startEval;
@@ -72,6 +70,18 @@ export async function analyze(
     const player = i % 2 === 0 ? "white" : "black";
     const uciMove =
       moveObj.from + moveObj.to + (moveObj.promotion ? moveObj.promotion : "");
+
+    let bestMoveSan = null;
+    if (evaluation.bestMove) {
+      const moveObj = chess.move({
+        from: evaluation.bestMove.slice(0, 2),
+        to: evaluation.bestMove.slice(2, 4),
+        promotion:
+          evaluation.bestMove.length > 4 ? evaluation.bestMove[4] : undefined,
+      });
+      bestMoveSan = moveObj ? moveObj.san : null;
+      if (moveObj) chess.undo();
+    }
 
     if (uciMove === prevEval.bestMove) {
       if (player === "white") {
@@ -109,9 +119,10 @@ export async function analyze(
 
     positions.push({
       moveNumber: i + 1,
-      move: moves[i],
+      move: moveObj.san,
       fen: chess.fen(),
-      evaluation,
+      evaluation: evaluation,
+      bestMoveSan: bestMoveSan ?? undefined,
     });
 
     prevEval = evaluation;

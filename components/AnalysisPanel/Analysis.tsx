@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Game, PlayerMoveStats } from "@/types";
+import { Game, PositionEvaluation, PlayerMoveStats } from "@/types";
 import Best from "@/public/moveClassifications/best.png";
 import Great from "@/public/moveClassifications/great.png";
 import Good from "@/public/moveClassifications/good.png";
@@ -11,12 +11,16 @@ import Blunder from "@/public/moveClassifications/blunder.png";
 
 interface AnalysisProps {
   selectedGame: Game;
+  currentMoveIndex: number;
+  analyzedPositions: PositionEvaluation[];
   whitePlayerStats: PlayerMoveStats | null;
   blackPlayerStats: PlayerMoveStats | null;
 }
 
 export default function Analysis({
   selectedGame,
+  currentMoveIndex,
+  analyzedPositions,
   whitePlayerStats,
   blackPlayerStats,
 }: AnalysisProps) {
@@ -38,11 +42,17 @@ export default function Analysis({
         </h3>
         <div className="bg-card flex items-center justify-between rounded p-4">
           <div className="flex items-center gap-3">
-            <div>
-              <p className="text-foreground text-sm font-medium">1.</p>
-            </div>
+            <p className="text-foreground text-sm font-medium">
+              {currentMoveIndex === 0
+                ? "Starting Position"
+                : `${Math.floor((currentMoveIndex + 1) / 2)}${
+                    currentMoveIndex % 2 === 1 ? "." : ". ..."
+                  } ${analyzedPositions[currentMoveIndex].move}`}
+            </p>
           </div>
-          <span className="text-sm font-medium">change in engine</span>
+          {currentMoveIndex !== 0 && (
+            <span className="text-sm font-medium">Change in Engine</span>
+          )}
         </div>
       </div>
 
@@ -51,7 +61,8 @@ export default function Analysis({
           Best Move
         </h3>
         <div className="bg-card flex items-center gap-2 rounded p-4">
-          <Image src={Best} alt="Best move icon" width={24} height={24} /> best
+          <Image src={Best} alt="Best move icon" width={24} height={24} />{" "}
+          {analyzedPositions[currentMoveIndex - 1]?.bestMoveSan}
         </div>
       </div>
 

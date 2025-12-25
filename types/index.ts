@@ -25,6 +25,20 @@ export interface PlayerMoveStats {
   blunder: number;
 }
 
+export interface StockfishEvaluation {
+  type: "cp" | "mate";
+  value: number;
+  bestMove: string;
+}
+
+export interface PositionEvaluation {
+  moveNumber: number;
+  move: string | null;
+  fen: string;
+  evaluation: StockfishEvaluation;
+  bestMoveSan?: string;
+}
+
 export interface Game {
   url: string;
   pgn: string;

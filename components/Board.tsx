@@ -8,7 +8,7 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import { Game } from "@/types";
-import { PositionEvaluation } from "@/lib/analyze";
+import { PositionEvaluation } from "@/types";
 
 interface BoardProps {
   selectedGame: Game | null;

@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ModalStep, Game, PlayerMoveStats } from "@/types";
+import { ModalStep, Game, PlayerMoveStats, PositionEvaluation } from "@/types";
 import Board from "@/components/Board";
 import SelectionModal from "@/components/SelectionModal";
 import AnalysisPanel from "@/components/AnalysisPanel";
 import { getPlayedMonths, getMonthGames } from "@/lib/chessComApi";
 import { getStockfish } from "@/lib/stockfish";
-import { analyze, PositionEvaluation } from "@/lib/analyze";
+import { analyze } from "@/lib/analyze";
 
 export default function Home() {
   const [username, setUsername] = useState("");
@@ -23,7 +23,7 @@ export default function Home() {
     current: number;
     total: number;
   } | null>(null);
-  const [analyedPositions, setAnalyzedPositions] = useState<
+  const [analyzedPositions, setAnalyzedPositions] = useState<
     PositionEvaluation[]
   >([]);
   const [whitePlayerStats, setWhitePlayerStats] =
@@ -101,7 +101,7 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(300px,600px)_1fr]">
             <Board
               selectedGame={selectedGame}
-              analyzedPositions={analyedPositions}
+              analyzedPositions={analyzedPositions}
               currentMoveIndex={currentMoveIndex}
               onMoveIndexChange={(index) => setCurrentMoveIndex(index)}
             />
@@ -157,6 +157,8 @@ export default function Home() {
                   )}
                   <AnalysisPanel
                     selectedGame={selectedGame}
+                    currentMoveIndex={currentMoveIndex}
+                    analyzedPositions={analyzedPositions}
                     whitePlayerStats={whitePlayerStats}
                     blackPlayerStats={blackPlayerStats}
                     onChangeUser={handleChangeUsername}

@@ -1,8 +1,4 @@
-export interface StockfishEvaluation {
-  type: "cp" | "mate";
-  value: number;
-  bestMove: string;
-}
+import { StockfishEvaluation } from "@/types";
 
 class StockfishEngine {
   private worker: Worker | null = null;
