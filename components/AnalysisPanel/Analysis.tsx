@@ -24,6 +24,53 @@ export default function Analysis({
   whitePlayerStats,
   blackPlayerStats,
 }: AnalysisProps) {
+  function getEvalPercent(
+    evaluation: PositionEvaluation["evaluation"] | undefined,
+  ) {
+    if (!evaluation) return 50;
+    let cp = 0;
+    if (evaluation.type === "cp") {
+      cp = evaluation.value;
+    } else if (evaluation.type === "mate") {
+      cp = evaluation.value > 0 ? 10000 : -10000;
+    }
+
+    const clamped = Math.max(-1000, Math.min(1000, cp));
+    return Math.round(((clamped + 1000) / 2000) * 100);
+  }
+
+  const evalIndex = currentMoveIndex === 0 ? 0 : currentMoveIndex - 1;
+  const isStartingPosition = currentMoveIndex === 0;
+  const currentEval = analyzedPositions[evalIndex]?.evaluation;
+  const evalPercent = isStartingPosition ? 50 : getEvalPercent(currentEval);
+  let evalLabel = "";
+  let evalLabelSide: "left" | "right" | null = null;
+  let evalLabelColor = "text-black";
+  if (!isStartingPosition && currentEval) {
+    if (currentEval.type === "cp") {
+      const cp = currentEval.value;
+      evalLabel = (cp / 100).toFixed(2);
+      if (cp > 15) {
+        evalLabelSide = "left";
+        evalLabelColor = "text-black";
+      } else if (cp < -15) {
+        evalLabelSide = "right";
+        evalLabelColor = "text-white";
+      } else {
+        evalLabelSide = null;
+      }
+    } else if (currentEval.type === "mate") {
+      evalLabel = `#${currentEval.value}`;
+      if (currentEval.value > 0) {
+        evalLabelSide = "left";
+        evalLabelColor = "text-black";
+      } else {
+        evalLabelSide = "right";
+        evalLabelColor = "text-white";
+      }
+    }
+  }
+
   return (
     <>
       <div className="mb-6">
@@ -31,8 +78,27 @@ export default function Analysis({
           Engine Evaluation
         </h3>
         <div className="relative flex h-10 items-center overflow-hidden rounded bg-black">
-          <div className="h-full bg-white" style={{ width: "50%" }}></div>
-          <span className="text-foreground absolute inset-0 flex items-center justify-center font-semibold mix-blend-difference"></span>
+          <div
+            className="h-full bg-white transition-all duration-300"
+            style={{ width: `${evalPercent}%` }}
+          ></div>
+          {evalLabel && evalLabelSide === "left" && (
+            <span className={`absolute left-2 font-semibold ${evalLabelColor}`}>
+              {evalLabel}
+            </span>
+          )}
+          {evalLabel && evalLabelSide === "right" && (
+            <span
+              className={`absolute right-2 font-semibold ${evalLabelColor}`}
+            >
+              {evalLabel}
+            </span>
+          )}
+          {evalLabel && !evalLabelSide && (
+            <span className="text-foreground absolute inset-0 flex items-center justify-center font-semibold mix-blend-difference">
+              {evalLabel}
+            </span>
+          )}
         </div>
       </div>
 
@@ -42,17 +108,72 @@ export default function Analysis({
         </h3>
         <div className="bg-card flex items-center justify-between rounded p-4">
           <div className="flex items-center gap-3">
-            <p className="text-foreground text-sm font-medium">
-              {currentMoveIndex === 0
-                ? "Starting Position"
-                : `${Math.floor((currentMoveIndex + 1) / 2)}${
-                    currentMoveIndex % 2 === 1 ? "." : ". ..."
-                  } ${analyzedPositions[currentMoveIndex].move}`}
+            <div className="flex items-center gap-1">
+              {(() => {
+                const classification =
+                  analyzedPositions[currentMoveIndex]?.classification;
+                if (!classification) return null;
+                switch (classification) {
+                  case "best":
+                    return (
+                      <>
+                        <Image src={Best} alt="Best" width={24} height={24} />
+                      </>
+                    );
+                  case "great":
+                    return (
+                      <>
+                        <Image src={Great} alt="Great" width={24} height={24} />
+                      </>
+                    );
+                  case "good":
+                    return (
+                      <>
+                        <Image src={Good} alt="Good" width={24} height={24} />
+                      </>
+                    );
+                  case "inaccuracy":
+                    return (
+                      <>
+                        <Image
+                          src={Inaccuracy}
+                          alt="Inaccuracy"
+                          width={24}
+                          height={24}
+                        />
+                      </>
+                    );
+                  case "mistake":
+                    return (
+                      <>
+                        <Image
+                          src={Mistake}
+                          alt="Mistake"
+                          width={24}
+                          height={24}
+                        />
+                      </>
+                    );
+                  case "blunder":
+                    return (
+                      <>
+                        <Image
+                          src={Blunder}
+                          alt="Blunder"
+                          width={24}
+                          height={24}
+                        />
+                      </>
+                    );
+                  default:
+                    return null;
+                }
+              })()}
+            </div>
+            <p className="text-foreground font-medium">
+              {analyzedPositions[currentMoveIndex]?.move}
             </p>
           </div>
-          {currentMoveIndex !== 0 && (
-            <span className="text-sm font-medium">Change in Engine</span>
-          )}
         </div>
       </div>
 

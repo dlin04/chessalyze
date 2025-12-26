@@ -47,7 +47,9 @@ export async function analyze(
   const chess = new Chess();
   chess.loadPgn(pgn);
   const moves = chess.history();
-  const positions: PositionEvaluation[] = [];
+  const positions: (PositionEvaluation & {
+    classification?: MoveClassification;
+  })[] = [];
 
   chess.reset();
   const stockfish = getStockfish();
@@ -58,6 +60,7 @@ export async function analyze(
     fen: chess.fen(),
     evaluation: startEval,
     bestMoveSan: "e4",
+    classification: undefined,
   });
 
   let prevEval = startEval;
@@ -83,12 +86,14 @@ export async function analyze(
       if (moveObj) chess.undo();
     }
 
+    let classification: MoveClassification | "best" = "best";
     if (uciMove === prevEval.bestMove) {
       if (player === "white") {
         whitePlayerStats.best++;
       } else {
         blackPlayerStats.best++;
       }
+      classification = "best";
     } else {
       const cpBefore =
         prevEval.type === "cp"
@@ -108,7 +113,7 @@ export async function analyze(
             : 0;
       const cpLoss =
         player === "white" ? cpBefore - cpAfter : cpAfter - cpBefore;
-      const classification = classifyMove(cpLoss);
+      classification = classifyMove(cpLoss);
 
       if (player === "white") {
         whitePlayerStats[classification]++;
@@ -123,6 +128,7 @@ export async function analyze(
       fen: chess.fen(),
       evaluation: evaluation,
       bestMoveSan: bestMoveSan ?? undefined,
+      classification,
     });
 
     prevEval = evaluation;

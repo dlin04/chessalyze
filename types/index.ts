@@ -37,6 +37,7 @@ export interface PositionEvaluation {
   fen: string;
   evaluation: StockfishEvaluation;
   bestMoveSan?: string;
+  classification?: MoveClassification;
 }
 
 export interface Game {
