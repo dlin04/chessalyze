@@ -1,0 +1,17 @@
+// Define database connection
+datasource db {
+  provider = "postgresql"
+}
+
+// Prisma Client generator
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Example data model
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+}
