@@ -8,6 +8,7 @@ import AnalysisPanel from "@/components/AnalysisPanel";
 import { getPlayedMonths, getMonthGames } from "@/lib/chessComApi";
 import { getStockfish } from "@/lib/stockfish";
 import { analyze } from "@/lib/analyze";
+import Authentication from "@/components/Authentication";
 
 export default function Home() {
   const [username, setUsername] = useState("");
@@ -81,8 +82,6 @@ export default function Home() {
       setAnalysisProgress({ status, current, total });
     });
 
-    console.log(result);
-
     setAnalyzedPositions(result.positions);
     setWhitePlayerStats(result.whitePlayerStats);
     setBlackPlayerStats(result.blackPlayerStats);
@@ -92,8 +91,9 @@ export default function Home() {
 
   return (
     <div className="bg-background min-h-screen">
-      <header className="bg-panel border-border flex h-[70px] items-center border-b px-8">
+      <header className="bg-panel border-border flex h-[70px] items-center justify-between border-b px-8">
         <h1 className="text-foreground text-2xl font-bold">Chessalyze</h1>
+        <Authentication />
       </header>
 
       <main className="p-8">
