@@ -68,7 +68,14 @@ export async function analyze(
   onProgress?.("analyzing", 0, moves.length);
   for (let i = 0; i < moves.length; i++) {
     const moveObj = chess.move(moves[i]);
-    const evaluation = await stockfish.evaluatePosition(chess.fen(), 15);
+    let evaluation = await stockfish.evaluatePosition(chess.fen(), 15);
+
+    if (chess.turn() === "b" && evaluation.type === "cp") {
+      evaluation = {
+        ...evaluation,
+        value: -evaluation.value,
+      };
+    }
 
     const player = i % 2 === 0 ? "white" : "black";
     const uciMove =
@@ -111,6 +118,9 @@ export async function analyze(
               ? 10000
               : -10000
             : 0;
+      // cpLoss measures how much worse the position got from the player's perspective
+      // For White: losing centipawns (eval decreasing) is bad
+      // For Black: gaining centipawns (eval increasing) is bad
       const cpLoss =
         player === "white" ? cpBefore - cpAfter : cpAfter - cpBefore;
       classification = classifyMove(cpLoss);

@@ -39,9 +39,8 @@ export default function Analysis({
     return Math.round(((clamped + 1000) / 2000) * 100);
   }
 
-  const evalIndex = currentMoveIndex === 0 ? 0 : currentMoveIndex - 1;
   const isStartingPosition = currentMoveIndex === 0;
-  const currentEval = analyzedPositions[evalIndex]?.evaluation;
+  const currentEval = analyzedPositions[currentMoveIndex]?.evaluation;
   const evalPercent = isStartingPosition ? 50 : getEvalPercent(currentEval);
   let evalLabel = "";
   let evalLabelSide: "left" | "right" | null = null;
@@ -106,7 +105,7 @@ export default function Analysis({
         <h3 className="text-foreground mb-2 text-sm font-semibold">
           Current Move
         </h3>
-        <div className="bg-card flex items-center justify-between rounded p-4">
+        <div className="bg-card flex min-h-[56px] items-center justify-between rounded p-4">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1">
               {(() => {
@@ -181,7 +180,7 @@ export default function Analysis({
         <h3 className="text-foreground mb-2 text-sm font-semibold">
           Best Move
         </h3>
-        <div className="bg-card flex items-center gap-2 rounded p-4">
+        <div className="bg-card flex min-h-[56px] items-center gap-2 rounded p-4">
           <Image src={Best} alt="Best move icon" width={24} height={24} />{" "}
           {analyzedPositions[currentMoveIndex - 1]?.bestMoveSan}
         </div>
