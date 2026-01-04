@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { Chessboard } from "react-chessboard";
 import {
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  ArrowUpDown,
 } from "lucide-react";
 import { Game } from "@/types";
 import { PositionEvaluation } from "@/types";
@@ -17,12 +19,15 @@ interface BoardProps {
   onMoveIndexChange: (index: number) => void;
 }
 
+type orientation = "white" | "black";
+
 export default function Board({
   selectedGame,
   analyzedPositions,
   currentMoveIndex,
   onMoveIndexChange,
 }: BoardProps) {
+  const [orientation, setOrientation] = useState<orientation>("white");
   const whitePlayer = selectedGame?.white.username || "White Player";
   const whitePlayerRating = selectedGame?.white.rating || "Rating";
   const blackPlayer = selectedGame?.black.username || "Black Player";
@@ -43,6 +48,7 @@ export default function Board({
       <div className="mb-3">
         <Chessboard
           options={{
+            boardOrientation: orientation,
             position:
               analyzedPositions.length > 0 &&
               analyzedPositions[currentMoveIndex]?.fen
@@ -103,6 +109,14 @@ export default function Board({
           className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors"
         >
           <ChevronsRight size={24} />
+        </button>
+        <button
+          onClick={() =>
+            setOrientation(orientation === "white" ? "black" : "white")
+          }
+          className="bg-interactive text-foreground hover:bg-border flex w-16 cursor-pointer items-center justify-center rounded py-2 transition-colors"
+        >
+          <ArrowUpDown size={24} />
         </button>
       </div>
     </div>
