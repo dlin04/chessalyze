@@ -11,4 +11,50 @@ model User {
   email     String   @unique
   name      String?
   createdAt DateTime @default(now())
+
+  analyzedGames Game[]
+}
+
+model Game {
+  id String @id @default(cuid())
+  chessComUuid String
+
+  whitePlayerName   String
+  whitePlayerRating Int
+  whiteBest         Int
+  whiteGreat        Int
+  whiteGood         Int
+  whiteInaccuracy   Int
+  whiteMistake      Int
+  whiteBlunder      Int
+
+  blackPlayerName   String
+  blackPlayerRating Int
+  blackBest         Int
+  blackGreat        Int
+  blackGood         Int
+  blackInaccuracy   Int
+  blackMistake      Int
+  blackBlunder      Int
+
+  result String
+  positions Position[]
+  user      User?      @relation(fields: [userId], references: [id])
+  userId    String?
+
+  @@unique([chessComUuid])
+}
+
+model Position {
+  id     String @id @default(cuid())
+  gameId String
+  game   Game   @relation(fields: [gameId], references: [id])
+
+  moveNumber     Int
+  move           String? // first position has no move
+  fen            String
+  evalType       String // "cp" or "mate"
+  evalValue Int
+  bestMove       String
+  classification String
 }

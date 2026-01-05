@@ -1,7 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ModalStep, Game, PlayerMoveStats, PositionEvaluation } from "@/types";
+import { getStored, storeAnalysis } from "@/lib/actions";
+import { useSession } from "next-auth/react";
+import {
+  ModalStep,
+  Game,
+  PlayerMoveStats,
+  PositionEvaluation,
+  StoredGame,
+  Player,
+} from "@/types";
 import Board from "@/components/Board";
 import SelectionModal from "@/components/SelectionModal";
 import AnalysisPanel from "@/components/AnalysisPanel";
@@ -9,11 +18,15 @@ import { getPlayedMonths, getMonthGames } from "@/lib/chessComApi";
 import { getStockfish } from "@/lib/stockfish";
 import { analyze } from "@/lib/analyze";
 import Authentication from "@/components/Authentication";
+import PreviousAnalyzedModal from "@/components/PreviousAnalyzedModal";
 
 export default function Home() {
+  const { data: session } = useSession();
   const [username, setUsername] = useState("");
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [showModal, setShowModal] = useState(true);
+  const [showPreviousModal, setShowPreviousModal] = useState(false);
+  const [previousGames, setPreviousGames] = useState<StoredGame[]>([]);
   const [modalStep, setModalStep] = useState<ModalStep>("username");
   const [availableMonths, setAvailableMonths] = useState<string[]>([]);
   const [availableGames, setAvailableGames] = useState<Game[]>([]);
@@ -27,6 +40,8 @@ export default function Home() {
   const [analyzedPositions, setAnalyzedPositions] = useState<
     PositionEvaluation[]
   >([]);
+  const [whitePlayer, setWhitePlayer] = useState<Player | null>(null);
+  const [blackPlayer, setblackPlayer] = useState<Player | null>(null);
   const [whitePlayerStats, setWhitePlayerStats] =
     useState<PlayerMoveStats | null>(null);
   const [blackPlayerStats, setBlackPlayerStats] =
@@ -85,28 +100,144 @@ export default function Home() {
     setAnalyzedPositions(result.positions);
     setWhitePlayerStats(result.whitePlayerStats);
     setBlackPlayerStats(result.blackPlayerStats);
+    setWhitePlayer(game.white);
+    setblackPlayer(game.black);
     setCurrentMoveIndex(0);
     setAnalysisProgress(null);
+
+    if (session?.user?.email) {
+      const outcome =
+        game.white.result === "win"
+          ? "1-0"
+          : game.black.result === "win"
+            ? "0-1"
+            : "½-½";
+
+      await storeAnalysis({
+        userEmail: session.user.email,
+        chessComUuid: game.uuid,
+        analyzedPositions: result.positions,
+        whitePlayer: game.white,
+        blackPlayer: game.black,
+        whitePlayerStats: result.whitePlayerStats,
+        blackPlayerStats: result.blackPlayerStats,
+        result: outcome,
+      });
+    }
+  };
+
+  const handleShowPrevious = async () => {
+    if (session?.user?.email) {
+      const previousGames = await getStored(session.user.email);
+      setPreviousGames(previousGames);
+      setShowPreviousModal(true);
+    }
+  };
+
+  const handleSelectPrevious = (game: StoredGame) => {
+    const positions: PositionEvaluation[] = game.positions.map((pos) => ({
+      moveNumber: pos.moveNumber,
+      move: pos.move,
+      fen: pos.fen,
+      evaluation: {
+        type: pos.evalType as "cp" | "mate",
+        value: pos.evalValue,
+        bestMove: pos.bestMove,
+      },
+      bestMoveSan: pos.bestMove,
+      ...(pos.classification && {
+        classification: pos.classification as
+          | "best"
+          | "great"
+          | "good"
+          | "inaccuracy"
+          | "mistake"
+          | "blunder",
+      }),
+    }));
+
+    const whiteStats: PlayerMoveStats = {
+      best: game.whiteBest,
+      great: game.whiteGreat,
+      good: game.whiteGood,
+      inaccuracy: game.whiteInaccuracy,
+      mistake: game.whiteMistake,
+      blunder: game.whiteBlunder,
+    };
+
+    const blackStats: PlayerMoveStats = {
+      best: game.blackBest,
+      great: game.blackGreat,
+      good: game.blackGood,
+      inaccuracy: game.blackInaccuracy,
+      mistake: game.blackMistake,
+      blunder: game.blackBlunder,
+    };
+
+    const mockGame: Game = {
+      url: "",
+      pgn: "",
+      time_control: "",
+      end_time: 0,
+      rated: true,
+      tcn: "",
+      uuid: game.chessComUuid,
+      initial_setup: "",
+      fen: "",
+      time_class: "",
+      rules: "",
+      white: {
+        rating: game.whitePlayerRating,
+        result: "",
+        "@id": "",
+        username: game.whitePlayerName,
+        uuid: "",
+      },
+      black: {
+        rating: game.blackPlayerRating,
+        result: "",
+        "@id": "",
+        username: game.blackPlayerName,
+        uuid: "",
+      },
+      eco: "",
+    };
+
+    setSelectedGame(mockGame);
+    setAnalyzedPositions(positions);
+    setWhitePlayerStats(whiteStats);
+    setBlackPlayerStats(blackStats);
+    setCurrentMoveIndex(0);
+    setShowPreviousModal(false);
   };
 
   return (
     <div className="bg-background min-h-screen">
       <header className="bg-panel border-border flex h-[70px] items-center justify-between border-b px-8">
         <h1 className="text-foreground text-2xl font-bold">Chessalyze</h1>
-        <Authentication />
+        <Authentication handleShowPrevious={handleShowPrevious} />
       </header>
 
       <main className="p-8">
         <div className="bg-panel mx-auto max-w-[1300px] rounded-lg p-5">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(300px,600px)_1fr]">
             <Board
-              selectedGame={selectedGame}
+              whitePlayer={whitePlayer}
+              blackPlayer={blackPlayer}
               analyzedPositions={analyzedPositions}
               currentMoveIndex={currentMoveIndex}
               onMoveIndexChange={(index) => setCurrentMoveIndex(index)}
             />
 
             <div className="bg-background relative min-h-[800px] rounded-lg p-5">
+              {showPreviousModal && (
+                <PreviousAnalyzedModal
+                  isOpen={showPreviousModal}
+                  previousAnalyzed={previousGames}
+                  onClose={() => setShowPreviousModal(false)}
+                  handleSelectPrevious={handleSelectPrevious}
+                />
+              )}
               {!selectedGame ? (
                 <SelectionModal
                   months={availableMonths}

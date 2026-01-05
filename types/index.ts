@@ -36,7 +36,7 @@ export interface PositionEvaluation {
   move: string | null;
   fen: string;
   evaluation: StockfishEvaluation;
-  bestMoveSan?: string;
+  bestMoveSan: string;
   classification?: MoveClassification;
 }
 
@@ -55,4 +55,39 @@ export interface Game {
   white: Player;
   black: Player;
   eco: string;
+}
+
+export interface StoredPosition {
+  id: string;
+  moveNumber: number;
+  move: string | null;
+  fen: string;
+  evalType: string;
+  evalValue: number;
+  bestMove: string;
+  classification: string;
+}
+
+export interface StoredGame {
+  id: string;
+  chessComUuid: string;
+  whitePlayerName: string;
+  whitePlayerRating: number;
+  whiteBest: number;
+  whiteGreat: number;
+  whiteGood: number;
+  whiteInaccuracy: number;
+  whiteMistake: number;
+  whiteBlunder: number;
+  blackPlayerName: string;
+  blackPlayerRating: number;
+  blackBest: number;
+  blackGreat: number;
+  blackGood: number;
+  blackInaccuracy: number;
+  blackMistake: number;
+  blackBlunder: number;
+  result: string;
+  positions: StoredPosition[];
+  userId?: string | null;
 }
