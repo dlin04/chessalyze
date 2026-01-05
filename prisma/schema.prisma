@@ -37,6 +37,7 @@ model Game {
   blackMistake      Int
   blackBlunder      Int
 
+  result String
   positions Position[]
   user      User?      @relation(fields: [userId], references: [id])
   userId    String?

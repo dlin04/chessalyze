@@ -1,5 +1,4 @@
 import { StoredGame } from "@/types";
-import { ArrowRightToLine } from "lucide-react";
 
 interface PreviousAnalyzedModalProps {
   isOpen: boolean;
@@ -51,9 +50,7 @@ export default function PreviousAnalyzedModal({
                           {game.positions?.length || 0} positions analyzed
                         </div>
                       </div>
-                      <div className="text-muted group-hover:text-foreground flex gap-2 text-sm transition-colors">
-                        Load <ArrowRightToLine className="h-5 w-5" />
-                      </div>
+                      <div className="text-lg font-bold">{game.result}</div>
                     </div>
                   </button>
                 );

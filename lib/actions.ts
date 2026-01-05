@@ -11,6 +11,7 @@ interface StoreAnalysisProps {
   blackPlayer: Player;
   whitePlayerStats: PlayerMoveStats | null;
   blackPlayerStats: PlayerMoveStats | null;
+  result: string;
 }
 
 export async function storeAnalysis({
@@ -21,6 +22,7 @@ export async function storeAnalysis({
   blackPlayer,
   whitePlayerStats,
   blackPlayerStats,
+  result,
 }: StoreAnalysisProps) {
   if (!whitePlayerStats || !blackPlayerStats) return;
 
@@ -50,6 +52,7 @@ export async function storeAnalysis({
       blackInaccuracy: blackPlayerStats.inaccuracy,
       blackMistake: blackPlayerStats.mistake,
       blackBlunder: blackPlayerStats.blunder,
+      result: result,
       positions: {
         create: analyzedPositions.map((pos) => ({
           moveNumber: pos.moveNumber,

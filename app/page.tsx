@@ -101,6 +101,13 @@ export default function Home() {
     setAnalysisProgress(null);
 
     if (session?.user?.email) {
+      const outcome =
+        game.white.result === "win"
+          ? "1-0"
+          : game.black.result === "win"
+            ? "0-1"
+            : "½-½";
+
       await storeAnalysis({
         userEmail: session.user.email,
         chessComUuid: game.uuid,
@@ -109,6 +116,7 @@ export default function Home() {
         blackPlayer: game.black,
         whitePlayerStats: result.whitePlayerStats,
         blackPlayerStats: result.blackPlayerStats,
+        result: outcome,
       });
     }
   };

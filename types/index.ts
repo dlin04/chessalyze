@@ -86,6 +86,7 @@ export interface StoredGame {
   blackInaccuracy: number;
   blackMistake: number;
   blackBlunder: number;
+  result: string;
   positions: StoredPosition[];
   userId?: string | null;
 }
