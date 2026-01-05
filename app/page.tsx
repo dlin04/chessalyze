@@ -9,6 +9,7 @@ import {
   PlayerMoveStats,
   PositionEvaluation,
   StoredGame,
+  Player,
 } from "@/types";
 import Board from "@/components/Board";
 import SelectionModal from "@/components/SelectionModal";
@@ -39,6 +40,8 @@ export default function Home() {
   const [analyzedPositions, setAnalyzedPositions] = useState<
     PositionEvaluation[]
   >([]);
+  const [whitePlayer, setWhitePlayer] = useState<Player | null>(null);
+  const [blackPlayer, setblackPlayer] = useState<Player | null>(null);
   const [whitePlayerStats, setWhitePlayerStats] =
     useState<PlayerMoveStats | null>(null);
   const [blackPlayerStats, setBlackPlayerStats] =
@@ -97,6 +100,8 @@ export default function Home() {
     setAnalyzedPositions(result.positions);
     setWhitePlayerStats(result.whitePlayerStats);
     setBlackPlayerStats(result.blackPlayerStats);
+    setWhitePlayer(game.white);
+    setblackPlayer(game.black);
     setCurrentMoveIndex(0);
     setAnalysisProgress(null);
 
@@ -129,6 +134,83 @@ export default function Home() {
     }
   };
 
+  const handleSelectPrevious = (game: StoredGame) => {
+    const positions: PositionEvaluation[] = game.positions.map((pos) => ({
+      moveNumber: pos.moveNumber,
+      move: pos.move,
+      fen: pos.fen,
+      evaluation: {
+        type: pos.evalType as "cp" | "mate",
+        value: pos.evalValue,
+        bestMove: pos.bestMove,
+      },
+      bestMoveSan: pos.bestMove,
+      ...(pos.classification && {
+        classification: pos.classification as
+          | "best"
+          | "great"
+          | "good"
+          | "inaccuracy"
+          | "mistake"
+          | "blunder",
+      }),
+    }));
+
+    const whiteStats: PlayerMoveStats = {
+      best: game.whiteBest,
+      great: game.whiteGreat,
+      good: game.whiteGood,
+      inaccuracy: game.whiteInaccuracy,
+      mistake: game.whiteMistake,
+      blunder: game.whiteBlunder,
+    };
+
+    const blackStats: PlayerMoveStats = {
+      best: game.blackBest,
+      great: game.blackGreat,
+      good: game.blackGood,
+      inaccuracy: game.blackInaccuracy,
+      mistake: game.blackMistake,
+      blunder: game.blackBlunder,
+    };
+
+    const mockGame: Game = {
+      url: "",
+      pgn: "",
+      time_control: "",
+      end_time: 0,
+      rated: true,
+      tcn: "",
+      uuid: game.chessComUuid,
+      initial_setup: "",
+      fen: "",
+      time_class: "",
+      rules: "",
+      white: {
+        rating: game.whitePlayerRating,
+        result: "",
+        "@id": "",
+        username: game.whitePlayerName,
+        uuid: "",
+      },
+      black: {
+        rating: game.blackPlayerRating,
+        result: "",
+        "@id": "",
+        username: game.blackPlayerName,
+        uuid: "",
+      },
+      eco: "",
+    };
+
+    setSelectedGame(mockGame);
+    setAnalyzedPositions(positions);
+    setWhitePlayerStats(whiteStats);
+    setBlackPlayerStats(blackStats);
+    setCurrentMoveIndex(0);
+    setShowPreviousModal(false);
+  };
+
   return (
     <div className="bg-background min-h-screen">
       <header className="bg-panel border-border flex h-[70px] items-center justify-between border-b px-8">
@@ -140,7 +222,8 @@ export default function Home() {
         <div className="bg-panel mx-auto max-w-[1300px] rounded-lg p-5">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(300px,600px)_1fr]">
             <Board
-              selectedGame={selectedGame}
+              whitePlayer={whitePlayer}
+              blackPlayer={blackPlayer}
               analyzedPositions={analyzedPositions}
               currentMoveIndex={currentMoveIndex}
               onMoveIndexChange={(index) => setCurrentMoveIndex(index)}
@@ -152,6 +235,7 @@ export default function Home() {
                   isOpen={showPreviousModal}
                   previousAnalyzed={previousGames}
                   onClose={() => setShowPreviousModal(false)}
+                  handleSelectPrevious={handleSelectPrevious}
                 />
               )}
               {!selectedGame ? (

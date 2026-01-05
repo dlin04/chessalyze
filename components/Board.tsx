@@ -9,11 +9,11 @@ import {
   ChevronsRight,
   ArrowUpDown,
 } from "lucide-react";
-import { Game } from "@/types";
-import { PositionEvaluation } from "@/types";
+import { Player, PositionEvaluation } from "@/types";
 
 interface BoardProps {
-  selectedGame: Game | null;
+  whitePlayer: Player | null;
+  blackPlayer: Player | null;
   analyzedPositions: PositionEvaluation[];
   currentMoveIndex: number;
   onMoveIndexChange: (index: number) => void;
@@ -22,27 +22,31 @@ interface BoardProps {
 type orientation = "white" | "black";
 
 export default function Board({
-  selectedGame,
+  whitePlayer,
+  blackPlayer,
   analyzedPositions,
   currentMoveIndex,
   onMoveIndexChange,
 }: BoardProps) {
   const [orientation, setOrientation] = useState<orientation>("white");
-  const whitePlayer = selectedGame?.white.username || "White Player";
-  const whitePlayerRating = selectedGame?.white.rating || "Rating";
-  const blackPlayer = selectedGame?.black.username || "Black Player";
-  const blackPlayerRating = selectedGame?.black.rating || "Rating";
-
   const defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
+  const topPlayer = orientation === "white" ? blackPlayer : whitePlayer;
+  const bottomPlayer = orientation === "white" ? whitePlayer : blackPlayer;
+  const topColor = orientation === "white" ? "bg-black" : "bg-white";
+  const bottomColor = orientation === "white" ? "bg-white" : "bg-black";
 
   return (
     <div className="bg-background rounded-lg p-5">
       <div className="bg-card mb-3 flex items-center justify-between rounded px-4 py-2">
         <div className="flex items-center gap-3">
-          <div className="h-6 w-6 rounded-full bg-black"></div>
-          <span>{blackPlayer}</span>
+          <div className={`h-6 w-6 rounded-full ${topColor}`}></div>
+          <span>
+            {topPlayer?.username ||
+              (orientation === "white" ? "Black Player" : "White Player")}
+          </span>
         </div>
-        <span>{blackPlayerRating}</span>
+        <span>{topPlayer?.rating || "-"}</span>
       </div>
 
       <div className="mb-3">
@@ -60,10 +64,13 @@ export default function Board({
 
       <div className="bg-card mb-4 flex items-center justify-between rounded px-4 py-2">
         <div className="flex items-center gap-3">
-          <div className="h-6 w-6 rounded-full bg-white"></div>
-          <span>{whitePlayer}</span>
+          <div className={`h-6 w-6 rounded-full ${bottomColor}`}></div>
+          <span>
+            {bottomPlayer?.username ||
+              (orientation === "white" ? "White Player" : "Black Player")}
+          </span>
         </div>
-        <span>{whitePlayerRating}</span>
+        <span>{bottomPlayer?.rating || "-"}</span>
       </div>
 
       <div className="bg-background flex justify-center gap-2 rounded p-2">

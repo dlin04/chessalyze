@@ -36,7 +36,7 @@ export interface PositionEvaluation {
   move: string | null;
   fen: string;
   evaluation: StockfishEvaluation;
-  bestMoveSan?: string;
+  bestMoveSan: string;
   classification?: MoveClassification;
 }
 
@@ -63,6 +63,7 @@ export interface StoredPosition {
   move: string | null;
   fen: string;
   evalType: string;
+  evalValue: number;
   bestMove: string;
   classification: string;
 }

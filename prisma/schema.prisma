@@ -54,6 +54,7 @@ model Position {
   move           String? // first position has no move
   fen            String
   evalType       String // "cp" or "mate"
+  evalValue Int
   bestMove       String
   classification String
 }

@@ -3,12 +3,14 @@ import { StoredGame } from "@/types";
 interface PreviousAnalyzedModalProps {
   isOpen: boolean;
   previousAnalyzed: StoredGame[];
+  handleSelectPrevious: (game: StoredGame) => void;
   onClose: () => void;
 }
 
 export default function PreviousAnalyzedModal({
   isOpen,
   previousAnalyzed,
+  handleSelectPrevious,
   onClose,
 }: PreviousAnalyzedModalProps) {
   if (!isOpen) return null;
@@ -39,6 +41,7 @@ export default function PreviousAnalyzedModal({
                   <button
                     key={game.id}
                     className="bg-background hover:bg-background/80 border-border w-full cursor-pointer rounded-lg border p-4 text-left transition-colors"
+                    onClick={() => handleSelectPrevious(game)}
                   >
                     <div className="flex items-center justify-between">
                       <div>
