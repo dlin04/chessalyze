@@ -118,9 +118,6 @@ export async function analyze(
               ? 10000
               : -10000
             : 0;
-      // cpLoss measures how much worse the position got from the player's perspective
-      // For White: losing centipawns (eval decreasing) is bad
-      // For Black: gaining centipawns (eval increasing) is bad
       const cpLoss =
         player === "white" ? cpBefore - cpAfter : cpAfter - cpBefore;
       classification = classifyMove(cpLoss);
@@ -137,7 +134,7 @@ export async function analyze(
       move: moveObj.san,
       fen: chess.fen(),
       evaluation: evaluation,
-      bestMoveSan: bestMoveSan ?? undefined,
+      bestMoveSan: bestMoveSan || "",
       classification,
     });
 
