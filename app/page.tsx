@@ -1,7 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ModalStep, Game, PlayerMoveStats, PositionEvaluation } from "@/types";
+import { getStored, storeAnalysis } from "@/lib/actions";
+import { useSession } from "next-auth/react";
+import {
+  ModalStep,
+  Game,
+  PlayerMoveStats,
+  PositionEvaluation,
+  StoredGame,
+} from "@/types";
 import Board from "@/components/Board";
 import SelectionModal from "@/components/SelectionModal";
 import AnalysisPanel from "@/components/AnalysisPanel";
@@ -9,11 +17,15 @@ import { getPlayedMonths, getMonthGames } from "@/lib/chessComApi";
 import { getStockfish } from "@/lib/stockfish";
 import { analyze } from "@/lib/analyze";
 import Authentication from "@/components/Authentication";
+import PreviousAnalyzedModal from "@/components/PreviousAnalyzedModal";
 
 export default function Home() {
+  const { data: session } = useSession();
   const [username, setUsername] = useState("");
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [showModal, setShowModal] = useState(true);
+  const [showPreviousModal, setShowPreviousModal] = useState(false);
+  const [previousGames, setPreviousGames] = useState<StoredGame[]>([]);
   const [modalStep, setModalStep] = useState<ModalStep>("username");
   const [availableMonths, setAvailableMonths] = useState<string[]>([]);
   const [availableGames, setAvailableGames] = useState<Game[]>([]);
@@ -87,13 +99,33 @@ export default function Home() {
     setBlackPlayerStats(result.blackPlayerStats);
     setCurrentMoveIndex(0);
     setAnalysisProgress(null);
+
+    if (session?.user?.email) {
+      await storeAnalysis({
+        userEmail: session.user.email,
+        chessComUuid: game.uuid,
+        analyzedPositions: result.positions,
+        whitePlayer: game.white,
+        blackPlayer: game.black,
+        whitePlayerStats: result.whitePlayerStats,
+        blackPlayerStats: result.blackPlayerStats,
+      });
+    }
+  };
+
+  const handleShowPrevious = async () => {
+    if (session?.user?.email) {
+      const previousGames = await getStored(session.user.email);
+      setPreviousGames(previousGames);
+      setShowPreviousModal(true);
+    }
   };
 
   return (
     <div className="bg-background min-h-screen">
       <header className="bg-panel border-border flex h-[70px] items-center justify-between border-b px-8">
         <h1 className="text-foreground text-2xl font-bold">Chessalyze</h1>
-        <Authentication />
+        <Authentication handleShowPrevious={handleShowPrevious} />
       </header>
 
       <main className="p-8">
@@ -107,6 +139,13 @@ export default function Home() {
             />
 
             <div className="bg-background relative min-h-[800px] rounded-lg p-5">
+              {showPreviousModal && (
+                <PreviousAnalyzedModal
+                  isOpen={showPreviousModal}
+                  previousAnalyzed={previousGames}
+                  onClose={() => setShowPreviousModal(false)}
+                />
+              )}
               {!selectedGame ? (
                 <SelectionModal
                   months={availableMonths}
